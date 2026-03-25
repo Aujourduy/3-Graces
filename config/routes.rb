@@ -11,4 +11,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  # Tailwind test page (temporary - for validation only)
+  get "tailwind_test" => "pages#tailwind_test" if Rails.env.development?
 end

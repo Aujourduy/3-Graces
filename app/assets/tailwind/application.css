@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+/* Theme configuration for custom design tokens */
+@theme {
+  /* Custom brand colors */
+  --color-terracotta: #C2623F;
+  --color-terracotta-light: #D97E5C;
+  --color-terracotta-dark: #A5502F;
+  --color-beige: #F5E6D3;
+  --color-beige-dark: #E8D4BB;
+  --color-dark-bg: #1A1A1A;
+
+  /* Custom font families */
+  --font-family-script: Georgia, serif;
+  --font-family-sans: Inter, system-ui, sans-serif;
+
+  /* Custom responsive breakpoints */
+  --breakpoint-xs: 390px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1728px;
+}
+
+/* Custom layer for reusable patterns */
+@layer components {
+  .btn-primary {
+    @apply bg-terracotta hover:bg-terracotta-dark text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200;
+  }
+}
