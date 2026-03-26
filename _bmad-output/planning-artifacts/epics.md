@@ -593,3 +593,41 @@ Enable administrators to manage scraping URLs, view logs, and correct event data
 - Pagination with pagy gem
 - Flash messages for feedback
 - **Note:** Rake tasks (scraping:run_all, scraping:test) are part of Epic 3 Scraping Engine. Admin interface provides web-based access to same functionality.
+
+
+---
+
+## Post-MVP Features
+
+### Analytics
+- **Cloudflare Analytics** : Activer dans le dashboard Cloudflare (trafic, bande passante, menaces)
+- **Plausible Analytics** : Installer pour analytics privacy-friendly (alternative à Google Analytics)
+  - Script léger (~1KB)
+  - Pas de cookies
+  - RGPD compliant par défaut
+  - Dashboard stats visiteurs, pages vues, sources
+
+### Search & Discovery
+- **FR7:** Keyword search avec Algolia (barre de recherche)
+- **FR8:** Geocoding API pour "Dans X km de (ville)"
+- **NFR-T8:** Algolia search index configuration
+
+### Media & Assets
+- **NFR-T10:** Cloudinary pour avatars professeurs et images événements optimisées
+
+### PWA (Progressive Web App)
+- **FR45:** manifest.json (nom app, icônes, couleurs)
+- **FR46:** Service Worker pour offline
+- **FR47:** Installation sur écran d'accueil mobile (iOS/Android)
+- **FR48:** Network-first caching strategy
+- **FR49:** Auto-update Service Worker avec détection version
+- **FR50:** Prompt utilisateur pour refresh quand nouvelle version
+
+### Theme
+- **FR18:** Toggle light/dark mode
+- **FR19:** Persistence préférence thème utilisateur
+
+### Newsletter
+- Envoi effectif newsletter (ActionMailer + job planifié)
+- Gestion désabonnement
+- Templates emails événements
