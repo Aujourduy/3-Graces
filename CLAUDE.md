@@ -42,10 +42,14 @@ Rails 8, PostgreSQL, Solid Queue, Tailwind, Turbo, Pagy.
 Une story est terminée UNIQUEMENT quand :
 1. Code écrit selon acceptance criteria
 2. Tests écrits ET passent (`rails test`)
-3. Routes impactées testées avec curl (status 200)
-4. Commit + push
+3. Tests système passent (`rails test:system`)
+4. Routes impactées testées avec curl (status 200)
+5. Si la story modifie du code existant, les tests impactés 
+   (unitaires + système) sont mis à jour pour refléter les changements
+6. Les tests existants qui échouent après une modif DOIVENT être 
+   corrigés avant commit, JAMAIS supprimés
+7. Commit + push
 Si tests ou curl échouent, corriger avant de passer à la suite.
-
 ---
 
 ## Audit QA — Après le dernier Epic de chaque session
