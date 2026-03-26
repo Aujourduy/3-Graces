@@ -24,6 +24,14 @@ Rails.application.routes.draw do
   # Newsletter subscriptions
   resources :newsletters, only: [:create]
 
+  # Professors (public French routes)
+  resources :professeurs, only: [:show], path: "professeurs", controller: "professors" do
+    member do
+      get :stats # Public stats page
+      get :redirect_to_site # Intermediate redirect to track clicks
+    end
+  end
+
   # Tailwind test page (temporary - for validation only)
   get "tailwind_test" => "pages#tailwind_test" if Rails.env.development?
 end

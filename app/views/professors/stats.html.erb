@@ -1,0 +1,64 @@
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+  <%# Header %>
+  <div class="mb-8">
+    <%= link_to "← Retour au profil", professeur_path(@professor), class: "text-terracotta hover:underline mb-4 inline-block" %>
+    <h1 class="text-4xl font-script italic">Statistiques publiques</h1>
+    <p class="text-gray-600 text-xl mt-2"><%= @professor.nom %></p>
+  </div>
+
+  <%# Stats cards grid %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <%# Consultations card %>
+    <div class="bg-white rounded-lg shadow-sm p-8 text-center">
+      <div class="text-6xl font-bold text-terracotta mb-2">
+        <%= number_with_delimiter(@professor.consultations_count) %>
+      </div>
+      <div class="text-gray-600 text-lg">
+        Consultations du profil
+      </div>
+      <p class="text-sm text-gray-500 mt-2">
+        Nombre de fois que votre profil a été consulté
+      </p>
+    </div>
+
+    <%# Outbound clicks card %>
+    <div class="bg-white rounded-lg shadow-sm p-8 text-center">
+      <div class="text-6xl font-bold text-terracotta mb-2">
+        <%= number_with_delimiter(@professor.clics_sortants_count) %>
+      </div>
+      <div class="text-gray-600 text-lg">
+        Clics vers votre site
+      </div>
+      <p class="text-sm text-gray-500 mt-2">
+        Nombre de fois que les visiteurs ont cliqué sur "Voir le site web"
+      </p>
+    </div>
+  </div>
+
+  <%# Info notice %>
+  <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+    <h3 class="font-bold text-blue-900 mb-2">À propos de ces statistiques</h3>
+    <ul class="text-blue-800 text-sm space-y-1 list-disc list-inside">
+      <li>Ces statistiques sont publiques et accessibles à tous</li>
+      <li>Elles sont mises à jour en temps réel</li>
+      <li>Vous pouvez partager ce lien pour montrer votre visibilité sur 3 Graces</li>
+      <li>Aucun compte n'est requis pour consulter cette page</li>
+    </ul>
+  </div>
+
+  <%# Share link section %>
+  <div class="bg-white rounded-lg shadow-sm p-8 mt-6">
+    <h3 class="font-bold text-lg mb-4">Partager ce lien</h3>
+    <div class="flex gap-2">
+      <input type="text"
+             readonly
+             value="<%= stats_professeur_url(@professor) %>"
+             class="flex-grow px-4 py-2 border border-gray-300 rounded bg-gray-50"
+             id="stats-url">
+      <button onclick="navigator.clipboard.writeText(document.getElementById('stats-url').value); this.textContent='✓ Copié!'; setTimeout(() => this.textContent='Copier', 2000)"
+              class="bg-terracotta text-white px-6 py-2 rounded hover:bg-terracotta-dark transition-colors">
+        Copier
+      </button>
+    </div>
+  </div>
+</div>
