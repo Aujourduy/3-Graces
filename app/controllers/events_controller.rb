@@ -5,6 +5,10 @@ class EventsController < ApplicationController
     # Apply filters to base scope
     scope = apply_filters(Event.futurs.includes(:professor))
 
+    # Calculate counts for ateliers and stages (based on filtered scope)
+    @atelier_count = scope.where(type_event: :atelier).count
+    @stage_count = scope.where(type_event: :stage).count
+
     # Pagy syntax: @pagy, @records = pagy(scope, limit: N)
     @pagy, @events = pagy(
       scope.order(:date_debut),

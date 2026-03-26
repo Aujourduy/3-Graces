@@ -22,7 +22,9 @@
   <div class="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8">
     <%# Main column: Event list (70% on desktop) %>
     <div>
-      <h1 class="text-3xl font-script italic mb-8">Agenda des Ateliers</h1>
+      <h1 class="text-3xl font-script italic mb-8">
+        Agenda des Ateliers (<%= @atelier_count %> ateliers) et Stages (<%= @stage_count %> stages)
+      </h1>
 
       <%= turbo_frame_tag "events-list", data: { controller: "infinite-scroll" } do %>
         <%= render "events_list", events: @events %>
