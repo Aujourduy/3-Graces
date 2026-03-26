@@ -17,7 +17,10 @@
             <%= link_to log.scraped_url.url.truncate(40), admin_scraped_url_path(log.scraped_url), class: "text-terracotta hover:underline" %>
           </td>
           <td class="px-6 py-4 text-sm text-gray-900">
-            <%= log.texte_avant.truncate(50) %> → <%= log.texte_apres.truncate(50) %>
+            <span class="text-red-600">-<%= log.changements_detectes["lines_removed"] || 0 %></span>
+            /
+            <span class="text-green-600">+<%= log.changements_detectes["lines_added"] || 0 %></span>
+            lignes
           </td>
         </tr>
       <% end %>

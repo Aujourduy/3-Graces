@@ -14,7 +14,7 @@
       <% else %>
         <%# Placeholder if no photo %>
         <div class="w-20 h-20 bg-terracotta-light rounded flex items-center justify-center text-white text-2xl">
-          <%= event.professor.nom[0] %>
+          <%= event.professor.nom&.first&.upcase || "?" %>
         </div>
       <% end %>
     </div>
