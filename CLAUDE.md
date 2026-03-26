@@ -11,7 +11,7 @@ La règle 2 reste active pour toute AUTRE discussion.
 ### Override Règle 3 (Démarrage session)
 Ce projet N'UTILISE PAS SUIVI_ENCOURS.md ni SUIVI_ARCHITECTURE.md.
 Au démarrage, lire ce fichier puis le fichier story de l'epic en cours.
-Pour savoir où on en est : `git log --oneline` — le dernier commit 
+Pour savoir où on en est : `git log --oneline` — le dernier commit
 feat: Story X.X indique la dernière story terminée.
 Stories : `_bmad-output/planning-artifacts/epic-*.md`
 Architecture : `_bmad-output/planning-artifacts/architecture.md`
@@ -36,12 +36,84 @@ STOP uniquement si erreur technique bloquante nécessitant intervention humaine.
 Agenda danse exploratoire France. Site read-only, zéro compte utilisateur.
 Rails 8, PostgreSQL, Solid Queue, Tailwind, Turbo, Pagy.
 
+---
+
 ## Définition de "Story terminée"
 Une story est terminée UNIQUEMENT quand :
 1. Code écrit selon acceptance criteria
 2. Tests écrits ET passent (`rails test`)
-3. Commit + push
-Si les tests échouent, corriger avant de passer à la suite.
+3. Routes impactées testées avec curl (status 200)
+4. Commit + push
+Si tests ou curl échouent, corriger avant de passer à la suite.
+
+---
+
+## Audit QA — Après le dernier Epic de chaque session
+
+Jouer le rôle de QA Engineer. Audit complet de l'application :
+
+### 1. TESTS
+Lancer `rails test` — TOUT doit passer. Zéro failure, zéro error.
+
+### 2. ROUTES
+Lancer le serveur sur port 3002, curl TOUTES les routes, vérifier status 200 :
+
+**Routes publiques :**
+- GET /
+- GET /evenements
+- GET /evenements/:slug (premier event des seeds)
+- GET /professeurs/:id (premier prof des seeds)
+- GET /professeurs/:id/stats
+- GET /professeurs/:id/redirect_to_site (vérifie redirect 303)
+- GET /a-propos
+- GET /contact
+- GET /proposants
+- GET /sitemap.xml
+
+**Routes admin (avec auth HTTP Basic) :**
+- GET /admin
+- GET /admin/scraped_urls
+- GET /admin/scraped_urls/new
+- GET /admin/scraped_urls/:id
+- GET /admin/scraped_urls/:id/edit
+- GET /admin/scraped_urls/:id/preview
+- GET /admin/events
+- GET /admin/events/:id
+- GET /admin/events/:id/edit
+- GET /admin/change_logs
+- GET /admin/change_logs/:id
+
+### 3. LIENS
+Vérifier que tous les `link_to` dans les vues pointent vers des routes
+qui existent. Grep les helpers de route utilisés dans `app/views/` et
+croiser avec `rails routes`.
+
+### 4. MODÈLES
+Vérifier que les associations (belongs_to, has_many, has_many :through)
+sont cohérentes :
+- Pas de données orphelines dans les seeds
+- Event.professor n'est JAMAIS nil pour les events affichés
+- Chaque belongs_to optionnel est protégé dans les vues (&. ou if)
+
+### 5. VUES
+Vérifier que chaque partial appelé avec `render` :
+- Existe au bon chemin
+- Reçoit les bonnes variables locales
+- Ne plante pas sur des données nil (professor, scraped_url, etc.)
+
+### 6. CONVENTIONS CLAUDE.MD
+Grep et vérifier dans tout le code :
+- Pagy utilisé partout, PAS Kaminari (JAMAIS `.page().per()`)
+- `Time.current` dans les scopes, PAS `Date.current`
+- `increment_counter` pour compteurs, PAS `increment!`
+- Timezone : `config.active_record.default_timezone = :utc`
+- Routes publiques en français (/evenements, /professeurs)
+
+### 7. RAPPORT
+Pour chaque bug trouvé : corriger, tester, commit, push.
+Faire un rapport final listant tout ce qui a été corrigé.
+
+---
 
 ## Conventions à respecter PARTOUT
 
@@ -53,11 +125,16 @@ Si les tests échouent, corriger avant de passer à la suite.
 - **Routes publiques** : français (/evenements, /professeurs).
 - **Scraping MVP** : un seul HtmlScraper générique, pas de scrapers spécialisés.
 
+---
+
 ## Ordre des Epics
 Epic 1 DÉBUT → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → Epic 1 FIN (Docker/prod en dernier).
+
+---
 
 ## Contexte serveur
 - PostgreSQL local (user dang, peer auth, pas de mot de passe)
 - Docker v1 tourne en parallèle — NE PAS TOUCHER
 - Ports occupés : 3000, 3001, 80, 443
+- Dev Rails v2 sur port 3002
 - Si bloqué : WebSearch ou WebFetch pour la doc
