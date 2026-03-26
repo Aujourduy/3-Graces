@@ -86,6 +86,14 @@ export default class extends Controller {
     const tagName = target.tagName.toLowerCase()
     const classes = target.className || "(no classes)"
 
+    // Texte de l'élément (tronqué si trop long)
+    let textContent = target.textContent?.trim() || ""
+    if (textContent.length > 100) {
+      textContent = textContent.substring(0, 100) + "..."
+    }
+    // Échapper les caractères HTML
+    textContent = textContent.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+
     // Couleurs
     const bgColor = this.rgbToHex(styles.backgroundColor)
     const textColor = this.rgbToHex(styles.color)
@@ -104,9 +112,12 @@ export default class extends Controller {
     const margin = `${styles.marginTop} ${styles.marginRight} ${styles.marginBottom} ${styles.marginLeft}`
 
     // Construire le contenu de l'infobulle
+    const textDisplay = textContent ? `<div class="bg-white bg-opacity-20 p-2 rounded text-xs italic border-l-4 border-gray-700">"${textContent}"</div>` : ""
+
     const info = `
       <div class="text-sm space-y-2">
         <div class="font-bold text-lg border-b border-gray-700 pb-2 mb-2">${tagName}.${classes}</div>
+        ${textDisplay}
         <div><strong>BG:</strong> ${bgColor}</div>
         <div><strong>Text:</strong> ${textColor}</div>
         <div><strong>Font:</strong> ${fontFamily}, ${fontSize}, ${fontWeight}</div>
