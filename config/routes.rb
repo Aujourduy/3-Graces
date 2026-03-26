@@ -18,6 +18,9 @@ Rails.application.routes.draw do
   get "/proposants", to: "pages#proposants", as: :proposants  # "Publier ateliers" form
   get "/actualites", to: "pages#actualites", as: :actualites  # Stub page
 
+  # Events (public French routes)
+  resources :evenements, only: [:index, :show], path: "evenements", controller: "events"
+
   # Tailwind test page (temporary - for validation only)
   get "tailwind_test" => "pages#tailwind_test" if Rails.env.development?
 end

@@ -20,6 +20,11 @@ class Event < ApplicationRecord
   # Scopes
   scope :futurs, -> { where('date_debut >= ?', Time.current) }
 
+  # Helper methods
+  def type_event_humanized
+    I18n.t("activerecord.attributes.event.type_events.#{type_event}", default: type_event.to_s.humanize)
+  end
+
   private
 
   def calculate_duree_minutes

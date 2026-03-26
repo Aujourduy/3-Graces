@@ -1,0 +1,29 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8">
+    <%# Main column: Event list (70% on desktop) %>
+    <div>
+      <h1 class="text-3xl font-script italic mb-8">Agenda des Ateliers</h1>
+
+      <%= turbo_frame_tag "events-list", data: { controller: "infinite-scroll" } do %>
+        <%= render "events_list", events: @events %>
+
+        <%# Infinite scroll trigger %>
+        <% if @pagy.next %>
+          <%= turbo_frame_tag "page-#{@pagy.next}",
+                              src: evenements_path(page: @pagy.next, format: :turbo_stream),
+                              loading: :lazy do %>
+            <div class="text-center py-8">
+              <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-terracotta"></div>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <%# Right sidebar: Filters (30% on desktop, hidden on mobile) %>
+    <aside class="hidden lg:block">
+      <%= render "shared/filters" %>
+      <%= render "shared/newsletter_signup" %>
+    </aside>
+  </div>
+</div>

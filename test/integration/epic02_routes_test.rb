@@ -17,7 +17,7 @@ class Epic02RoutesTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /evenements returns 200" do
-    # Skip - events route will be implemented in Epic 4
-    skip "Events listing route not yet implemented (Epic 4)"
+    get "/evenements"
+    assert_response :success
   end
 end

@@ -1,0 +1,33 @@
+fr:
+  date:
+    formats:
+      long: "%A %-d %B %Y" # "Samedi 25 mars 2026"
+
+  time:
+    formats:
+      time_only: "%Hh%M" # "19h30"
+      long: "%A %-d %B %Y, %Hh%M" # "Samedi 25 mars 2026, 19h30"
+
+  activerecord:
+    attributes:
+      event:
+        type_events:
+          atelier: "Atelier"
+          stage: "Stage"
+
+en:
+  date:
+    formats:
+      long: "%A %-d %B %Y"
+
+  time:
+    formats:
+      time_only: "%H:%M"
+      long: "%A %-d %B %Y, %H:%M"
+
+  activerecord:
+    attributes:
+      event:
+        type_events:
+          atelier: "Workshop"
+          stage: "Stage"
