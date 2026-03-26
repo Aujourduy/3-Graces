@@ -70,6 +70,9 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # System tests with Capybara + Playwright
+  gem "capybara-playwright-driver"
 end
 
 group :development do

@@ -113,6 +113,23 @@ Grep et vérifier dans tout le code :
 Pour chaque bug trouvé : corriger, tester, commit, push.
 Faire un rapport final listant tout ce qui a été corrigé.
 
+### 8. TESTS SYSTÈME (UX)
+Utiliser Capybara + Playwright local (PAS Selenium, PAS container Docker Playwright v1).
+Driver: `capybara-playwright-driver`, browser: Chromium headless, port 3002.
+Config: `test/application_system_test_case.rb`
+
+Écrire des tests système pour les interactions utilisateur :
+- Homepage : charge OK, affiche Hero, navbar
+- Liste événements : affiche des events
+- Filtres : cocher "Gratuit" → seuls events gratuits affichés
+- Filtres : entrer date → filtrage OK
+- Modal : cliquer event → modal s'ouvre
+- Newsletter : remplir email → flash message succès
+- Infinite scroll : scroll → batch suivant chargé
+- Admin : login HTTP Basic → accès admin OK
+
+Lancer avec `rails test:system` — tout doit passer.
+
 ---
 
 ## Conventions à respecter PARTOUT
@@ -133,8 +150,19 @@ Epic 1 DÉBUT → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → Epic 1 FIN (Do
 ---
 
 ## Contexte serveur
+
+### Infrastructure locale
 - PostgreSQL local (user dang, peer auth, pas de mot de passe)
 - Docker v1 tourne en parallèle — NE PAS TOUCHER
 - Ports occupés : 3000, 3001, 80, 443
 - Dev Rails v2 sur port 3002
-- Si bloqué : WebSearch ou WebFetch pour la doc
+- Tests système : Capybara + Playwright local (Chromium)
+
+### Réseau et déploiement
+- **Tailscale** : VPN mesh privé, serveur accessible via IP 100.x.x.x
+- **Cloudflare** : DNS + proxy HTTPS pour 3graces.community
+- **HTTPS** : Géré par Cloudflare uniquement, PAS par Caddy/Let's Encrypt
+- **Admin** : Peut être restreint au réseau Tailscale (accès VPN uniquement)
+
+### Aide
+Si bloqué : WebSearch ou WebFetch pour consulter la documentation.
