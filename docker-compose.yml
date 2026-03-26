@@ -1,0 +1,72 @@
+services:
+  db:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: threegraces
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: threegraces_production
+    restart: unless-stopped
+    networks:
+      - app_network
+
+  web:
+    build: .
+    depends_on:
+      - db
+    environment:
+      RAILS_ENV: production
+      DATABASE_URL: postgresql://threegraces:${DB_PASSWORD}@db/threegraces_production
+      ADMIN_USERNAME: ${ADMIN_USERNAME}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      ALERT_EMAIL: ${ALERT_EMAIL}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+    volumes:
+      - ./log:/rails/log
+      - ~/.claude:/root/.claude  # Claude CLI auth persistence
+    ports:
+      - "8080:3000"  # Avoid conflict with v1 (3000/3001), Nextcloud (80/443)
+    restart: unless-stopped
+    networks:
+      - app_network
+
+  jobs:
+    build: .
+    depends_on:
+      - db
+    environment:
+      RAILS_ENV: production
+      DATABASE_URL: postgresql://threegraces:${DB_PASSWORD}@db/threegraces_production
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+    command: bundle exec rake solid_queue:start
+    volumes:
+      - ./log:/rails/log
+      - ~/.claude:/root/.claude  # Claude CLI needed for scraping jobs
+    restart: unless-stopped
+    networks:
+      - app_network
+
+  caddy:
+    image: caddy:2
+    ports:
+      - "8443:443"  # Temporary - Nextcloud occupies 80/443
+      - "8000:80"   # Temporary - needs resolution for Let's Encrypt
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+    restart: unless-stopped
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:
+
+networks:
+  app_network:
+    driver: bridge
