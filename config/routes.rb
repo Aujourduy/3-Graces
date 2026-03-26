@@ -21,6 +21,9 @@ Rails.application.routes.draw do
   # Events (public French routes)
   resources :evenements, only: [:index, :show], path: "evenements", controller: "events"
 
+  # Newsletter subscriptions
+  resources :newsletters, only: [:create]
+
   # Tailwind test page (temporary - for validation only)
   get "tailwind_test" => "pages#tailwind_test" if Rails.env.development?
 end

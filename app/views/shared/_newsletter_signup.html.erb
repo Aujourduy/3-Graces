@@ -1,8 +1,20 @@
-<%# Newsletter signup placeholder - will be implemented in Epic 8 %>
-<div class="bg-terracotta text-white rounded-lg shadow-sm p-4 mt-4">
-  <h3 class="font-bold text-lg mb-2">Newsletter</h3>
-  <p class="text-sm mb-3">Restez informé des nouveaux ateliers</p>
-  <button class="bg-white text-terracotta px-4 py-2 rounded w-full font-medium hover:bg-beige transition-colors">
-    S'inscrire
-  </button>
+<div class="bg-terracotta text-white rounded-lg p-6">
+  <h2 class="font-script italic text-2xl mb-4">S'inscrire à la newsletter</h2>
+
+  <%= form_with model: Newsletter.new,
+                url: newsletters_path,
+                method: :post,
+                class: "space-y-3" do |f| %>
+
+    <%= f.label :email, "Votre email", class: "block text-sm mb-1" %>
+    <%= f.email_field :email,
+                      placeholder: "votre@email.com",
+                      required: true,
+                      class: "w-full rounded border-0 py-2 px-3 text-gray-900 focus:ring-2 focus:ring-white" %>
+
+    <%= f.submit "Souscrire",
+                 class: "w-full bg-white text-terracotta font-medium py-2 rounded hover:bg-gray-100 transition-colors cursor-pointer" %>
+
+    <p class="text-xs opacity-75 mt-2">En souscrivant, vous acceptez de recevoir nos emails (RGPD compliant).</p>
+  <% end %>
 </div>
