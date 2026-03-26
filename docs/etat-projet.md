@@ -1,9 +1,9 @@
 # État du Projet - 3 Graces v2
 
-**Dernière mise à jour :** 2026-03-26 20:37
+**Dernière mise à jour :** 2026-03-26 21:45
 **Branch :** main
-**Dernière commit :** (en cours - améliorations design d'après maquette Figma)
-**Statut :** ✅ **PROJET TERMINÉ - TOUS LES EPICS COMPLÉTÉS + Design Figma appliqué**
+**Dernière commit :** 476b93b - "docs: Process maj état projet AVANT chaque commit significatif"
+**Statut :** ✅ **PROJET TERMINÉ - TOUS LES EPICS COMPLÉTÉS**
 
 ---
 
@@ -263,20 +263,16 @@ bin/rails scraping:test[1]    # Test parsing sans sauvegarder
 
 ## Notes Session Actuelle
 
-**Corrections aujourd'hui :**
+**Session précédente (2026-03-26 matin) :**
 - ✅ CI lint échouait (108 offenses RuboCop) → corrigé
 - ✅ CI scan_ruby échouait (Command Injection, XSS) → corrigé
 - ✅ Brakeman warnings (redirect, XSS) → config/brakeman.ignore créé
 - ✅ Setup synchronisation Gist pour claude.ai → opérationnel
 
-**Améliorations design d'après maquette Figma :**
-- ✅ Hero : Logo "AU JOUR duy" style script + tags pratiques colorés (Contact Impro, 5 Rythmes, etc.)
-- ✅ Hero : Boutons CTA redessinés (Voir l'agenda, Proposer ateliers, À propos)
-- ✅ Séparateurs de date : Style terracotta bold (au lieu de gris avec lignes)
-- ✅ Cartes événements : Images agrandies (112px), badges rouges/bleus proéminents
-- ✅ Sidebar filtres : Fond terracotta complet avec toggles stylés
-- ✅ Newsletter : Style terracotta cohérent avec sidebar
-- ✅ Titre page : "Liste des événements" en terracotta bold
+**Session actuelle (2026-03-26 soir) :**
+- Tentative d'application design Figma (4 itérations) → annulée par utilisateur
+- Reset au commit 476b93b (avant modifications Figma)
+- En attente d'instructions détaillées pour design Figma
 
 **Prochaines actions suggérées :**
 - Upgrade Ruby 3.3 avant EOL 3.2.10 (31 mars 2026)
