@@ -2,18 +2,19 @@
   <%# Search component (placeholder for Algolia post-MVP) %>
   <%= render "shared/search" %>
 
-  <div data-debug-id="filters" class="bg-white rounded-lg shadow-sm p-6"
+  <%# Filters card - full terracotta background like Figma %>
+  <div data-debug-id="filters" class="bg-terracotta rounded-lg shadow-lg p-6 text-white"
        data-controller="filters">
 
     <%# Filter header %>
-  <div class="flex items-center justify-between mb-6 bg-terracotta text-white -mx-6 -mt-6 px-6 py-4 rounded-t-lg">
-    <h2 class="font-script italic text-2xl">Filtrez l'agenda</h2>
-    <%# Close button only visible on mobile overlay (hidden on desktop sidebar) %>
-    <button data-action="click->filters#close"
-            class="lg:hidden text-2xl">
-      &times;
-    </button>
-  </div>
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="font-bold text-xl">Rechercher</h2>
+      <%# Close button only visible on mobile overlay (hidden on desktop sidebar) %>
+      <button data-action="click->filters#close"
+              class="lg:hidden text-2xl hover:bg-terracotta-dark rounded p-1">
+        &times;
+      </button>
+    </div>
 
   <%= form_with url: evenements_path,
                 method: :get,
@@ -23,83 +24,77 @@
                 },
                 class: "space-y-6" do |f| %>
 
-    <%# Type & Format filters (2-column grid) %>
+    <%# Type & Format filters - toggle style like Figma %>
     <div>
-      <h3 class="font-medium mb-3">Type et format</h3>
-      <div class="space-y-2">
-        <div class="flex items-center">
+      <h3 class="font-bold text-sm uppercase mb-3">EN PRÉSENTIEL</h3>
+      <div class="space-y-3">
+        <div class="flex items-center justify-between bg-white/10 rounded px-3 py-2">
+          <%= f.label :en_presentiel, "En présentiel", class: "cursor-pointer flex-grow" %>
           <%= f.check_box :en_presentiel,
-                          { checked: params[:en_presentiel] == "true", class: "rounded text-terracotta focus:ring-terracotta" },
+                          { checked: params[:en_presentiel] == "true", class: "w-5 h-5 rounded bg-white border-0 text-terracotta-dark focus:ring-white" },
                           "true", nil %>
-          <%= f.label :en_presentiel, "En présentiel", class: "ml-2" %>
         </div>
 
-        <div class="flex items-center">
+        <div class="flex items-center justify-between bg-white/10 rounded px-3 py-2">
+          <%= f.label :stage, "Stage", class: "cursor-pointer flex-grow" %>
           <%= f.check_box :stage,
-                          { checked: params[:stage] == "true", class: "rounded text-terracotta focus:ring-terracotta" },
+                          { checked: params[:stage] == "true", class: "w-5 h-5 rounded bg-white border-0 text-terracotta-dark focus:ring-white" },
                           "true", nil %>
-          <%= f.label :stage, "Stage", class: "ml-2" %>
         </div>
 
-        <div class="flex items-center">
-          <%= f.check_box :en_ligne,
-                          { checked: params[:en_ligne] == "true", class: "rounded text-terracotta focus:ring-terracotta" },
-                          "true", nil %>
-          <%= f.label :en_ligne, "En ligne", class: "ml-2" %>
-        </div>
-
-        <div class="flex items-center">
-          <%= f.check_box :gratuit,
-                          { checked: params[:gratuit] == "true", class: "rounded text-terracotta focus:ring-terracotta" },
-                          "true", nil %>
-          <%= f.label :gratuit, "Gratuit", class: "ml-2" %>
-        </div>
-
-        <div class="flex items-center">
+        <div class="flex items-center justify-between bg-white/10 rounded px-3 py-2">
+          <%= f.label :atelier, "Atelier", class: "cursor-pointer flex-grow" %>
           <%= f.check_box :atelier,
-                          { checked: params[:atelier] == "true", class: "rounded text-terracotta focus:ring-terracotta" },
+                          { checked: params[:atelier] == "true", class: "w-5 h-5 rounded bg-white border-0 text-terracotta-dark focus:ring-white" },
                           "true", nil %>
-          <%= f.label :atelier, "Atelier", class: "ml-2" %>
+        </div>
+
+        <div class="flex items-center justify-between bg-white/10 rounded px-3 py-2">
+          <%= f.label :en_ligne, "En ligne", class: "cursor-pointer flex-grow" %>
+          <%= f.check_box :en_ligne,
+                          { checked: params[:en_ligne] == "true", class: "w-5 h-5 rounded bg-white border-0 text-terracotta-dark focus:ring-white" },
+                          "true", nil %>
+        </div>
+
+        <div class="flex items-center justify-between bg-white/10 rounded px-3 py-2">
+          <%= f.label :gratuit, "Gratuit", class: "cursor-pointer flex-grow" %>
+          <%= f.check_box :gratuit,
+                          { checked: params[:gratuit] == "true", class: "w-5 h-5 rounded bg-white border-0 text-terracotta-dark focus:ring-white" },
+                          "true", nil %>
         </div>
       </div>
     </div>
 
     <%# Date filter %>
     <div>
-      <h3 class="font-medium mb-3">Date</h3>
-      <%= f.label :date_debut, "À partir du", class: "block text-sm mb-1" %>
+      <h3 class="font-bold text-sm uppercase mb-3">À PARTIR DU</h3>
       <%= f.date_field :date_debut,
                        value: params[:date_debut],
-                       class: "w-full rounded border-gray-300 focus:border-terracotta focus:ring-terracotta",
+                       class: "w-full rounded-lg bg-white text-gray-900 px-4 py-3 border-0 focus:ring-2 focus:ring-white",
                        placeholder: "JJ/MM/AAAA" %>
     </div>
 
     <%# Geographic filter (basic MVP, full geocoding post-MVP) %>
     <div>
-      <h3 class="font-medium mb-3">Lieu</h3>
-      <%= f.label :lieu, "Adresse, ville...", class: "block text-sm mb-1" %>
-      <%= f.text_field :lieu,
-                       value: params[:lieu],
-                       class: "w-full rounded border-gray-300 focus:border-terracotta focus:ring-terracotta mb-3",
-                       placeholder: "Paris, Lyon..." %>
-
-      <%= f.label :distance, "Distance (km)", class: "block text-sm mb-1" %>
+      <h3 class="font-bold text-sm uppercase mb-3">DISTANCE</h3>
       <%= f.number_field :distance,
-                         class: "w-full rounded border-gray-300 focus:border-terracotta focus:ring-terracotta",
-                         placeholder: "Ex: 20",
+                         class: "w-full rounded-lg bg-white/30 text-white placeholder-white/70 px-4 py-3 border-0",
+                         placeholder: "20 km",
                          disabled: true %>
-      <p class="text-xs text-gray-500 mt-1">Géolocalisation disponible prochainement</p>
+      <p class="text-xs text-white/70 mt-2">Géolocalisation disponible prochainement</p>
     </div>
 
-    <%# Submit button %>
-    <%= f.submit "Appliquer",
-                 class: "w-full bg-terracotta text-white font-medium py-3 rounded hover:bg-terracotta-dark transition-colors cursor-pointer" %>
+    <%# Submit button - hidden, auto-submit instead %>
+    <div class="hidden">
+      <%= f.submit "Appliquer",
+                   class: "w-full bg-white text-terracotta font-bold py-3 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer" %>
+    </div>
 
     <%# Reset button %>
     <%= link_to "Réinitialiser",
                 evenements_path,
                 data: { turbo_frame: "events-list" },
-                class: "block text-center text-terracotta hover:underline mt-2" %>
+                class: "block text-center text-white hover:text-white/80 mt-4 underline" %>
   <% end %>
   </div>
 </div>

@@ -1,9 +1,9 @@
 # État du Projet - 3 Graces v2
 
-**Dernière mise à jour :** 2026-03-26 18:15
+**Dernière mise à jour :** 2026-03-26 20:37
 **Branch :** main
-**Dernière commit :** 967b88c - "fix: Corrige construction JSON dans bin/sync-gist.sh"
-**Statut :** ✅ **PROJET TERMINÉ - TOUS LES EPICS COMPLÉTÉS**
+**Dernière commit :** (en cours - améliorations design d'après maquette Figma)
+**Statut :** ✅ **PROJET TERMINÉ - TOUS LES EPICS COMPLÉTÉS + Design Figma appliqué**
 
 ---
 
@@ -268,6 +268,15 @@ bin/rails scraping:test[1]    # Test parsing sans sauvegarder
 - ✅ CI scan_ruby échouait (Command Injection, XSS) → corrigé
 - ✅ Brakeman warnings (redirect, XSS) → config/brakeman.ignore créé
 - ✅ Setup synchronisation Gist pour claude.ai → opérationnel
+
+**Améliorations design d'après maquette Figma :**
+- ✅ Hero : Logo "AU JOUR duy" style script + tags pratiques colorés (Contact Impro, 5 Rythmes, etc.)
+- ✅ Hero : Boutons CTA redessinés (Voir l'agenda, Proposer ateliers, À propos)
+- ✅ Séparateurs de date : Style terracotta bold (au lieu de gris avec lignes)
+- ✅ Cartes événements : Images agrandies (112px), badges rouges/bleus proéminents
+- ✅ Sidebar filtres : Fond terracotta complet avec toggles stylés
+- ✅ Newsletter : Style terracotta cohérent avec sidebar
+- ✅ Titre page : "Liste des événements" en terracotta bold
 
 **Prochaines actions suggérées :**
 - Upgrade Ruby 3.3 avant EOL 3.2.10 (31 mars 2026)

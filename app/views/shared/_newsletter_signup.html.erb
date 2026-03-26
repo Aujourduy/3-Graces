@@ -1,20 +1,20 @@
-<div data-debug-id="newsletter-signup" class="bg-terracotta text-white rounded-lg p-6">
-  <h2 class="font-script italic text-2xl mb-4">S'inscrire à la newsletter</h2>
+<div data-debug-id="newsletter-signup" class="bg-terracotta text-white rounded-lg shadow-lg p-6">
+  <h2 class="font-bold text-xl mb-4">S'inscrire à la newsletter</h2>
 
   <%= form_with model: Newsletter.new,
                 url: newsletters_path,
                 method: :post,
                 class: "space-y-3" do |f| %>
 
-    <%= f.label :email, "Votre email", class: "block text-sm mb-1" %>
+    <%= f.label :email, "Votre email", class: "block text-sm font-medium mb-2" %>
     <%= f.email_field :email,
                       placeholder: "votre@email.com",
                       required: true,
-                      class: "w-full rounded border-0 py-2 px-3 text-gray-900 focus:ring-2 focus:ring-white" %>
+                      class: "w-full rounded-lg border-0 py-3 px-4 text-gray-900 focus:ring-2 focus:ring-white" %>
 
-    <%= f.submit "Souscrire",
-                 class: "w-full bg-white text-terracotta font-medium py-2 rounded hover:bg-gray-100 transition-colors cursor-pointer" %>
+    <%= f.submit "Je m'inscris",
+                 class: "w-full bg-white text-terracotta font-bold py-3 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer" %>
 
-    <p class="text-xs opacity-75 mt-2">En souscrivant, vous acceptez de recevoir nos emails (RGPD compliant).</p>
+    <p class="text-xs text-white/70 mt-2">Recevez les nouveaux événements par email (RGPD compliant).</p>
   <% end %>
 </div>

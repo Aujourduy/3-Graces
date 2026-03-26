@@ -2,11 +2,38 @@
   <%# Background dancer photo - placeholder for now %>
   <div class="absolute inset-0 bg-gradient-to-b from-transparent to-dark-bg/50"></div>
 
-  <div class="relative z-10 text-center px-4">
-    <h1 class="font-script italic text-terracotta text-4xl md:text-6xl mb-6">3 Grâces</h1>
-    <p class="text-xl md:text-2xl italic max-w-3xl mx-auto">
-      Agenda de référence des pratiques de danse exploratoires et non-performatives en France.
-      "Quel atelier ce soir à Paris ?" — ce que Google et Facebook ne savent pas faire.
+  <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+    <%# Logo AU JOUR duy style %>
+    <div class="mb-8">
+      <h1 class="font-script italic text-white text-5xl md:text-7xl leading-tight">
+        AU
+        <br>
+        <span class="text-6xl md:text-8xl">JOUR</span>
+        <br>
+        <span class="italic text-4xl md:text-6xl">duy</span>
+      </h1>
+    </div>
+
+    <%# Tagline %>
+    <p class="text-base md:text-lg italic max-w-2xl mx-auto mb-8 leading-relaxed">
+      Lâché sur l'agenda communautaire des pratiques de danse libres en France, (Contact impro, 5 rythmes et plus) ce petit génie te permet de faire grimper la fréquentation de tous tes ateliers et d'éviter le burn-out de ce trop grand projet qui rêve trop grand.
     </p>
+
+    <%# Tags pratiques colorés - style pastel comme Figma %>
+    <div class="flex flex-wrap justify-center gap-2 mb-8">
+      <span class="px-4 py-2 rounded-full text-sm font-medium bg-orange-200 text-orange-900">Contact Impro</span>
+      <span class="px-4 py-2 rounded-full text-sm font-medium bg-teal-200 text-teal-900">5 Rythmes</span>
+      <span class="px-4 py-2 rounded-full text-sm font-medium bg-pink-200 text-pink-900">Authentic Movement</span>
+      <span class="px-4 py-2 rounded-full text-sm font-medium bg-amber-200 text-amber-900">Danse Butô</span>
+      <span class="px-4 py-2 rounded-full text-sm font-medium bg-purple-200 text-purple-900">BMC</span>
+      <span class="px-4 py-2 rounded-full text-sm font-medium bg-rose-200 text-rose-900">Autres pratiques</span>
+    </div>
+
+    <%# CTA Buttons %>
+    <div class="flex flex-wrap justify-center gap-3">
+      <%= link_to "VOIR L'AGENDA", evenements_path, class: "px-6 py-3 rounded-lg bg-terracotta hover:bg-terracotta-dark text-white font-medium transition" %>
+      <%= link_to "PROPOSER ATELIERS", proposants_path, class: "px-6 py-3 rounded-lg bg-white hover:bg-gray-100 text-dark-bg font-medium transition" %>
+      <%= link_to "À PROPOS", about_path, class: "px-6 py-3 rounded-lg bg-transparent border-2 border-white hover:bg-white/10 text-white font-medium transition" %>
+    </div>
   </div>
 </section>
