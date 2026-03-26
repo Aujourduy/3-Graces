@@ -9,15 +9,16 @@ export default class extends Controller {
   connect() {
     this.active = false
     this.currentElement = null
-    this.boundHandleKeydown = this.handleKeydown.bind(this)
-    this.boundHandleMouseMove = this.handleMouseMove.bind(this)
-    this.boundHandleMouseOut = this.handleMouseOut.bind(this)
 
-    document.addEventListener("keydown", this.boundHandleKeydown)
+    this.handleKeydown = this.handleKeydown.bind(this)
+    this.handleMouseMove = this.handleMouseMove.bind(this)
+    this.handleMouseOut = this.handleMouseOut.bind(this)
+
+    document.addEventListener("keydown", this.handleKeydown)
   }
 
   disconnect() {
-    document.removeEventListener("keydown", this.boundHandleKeydown)
+    document.removeEventListener("keydown", this.handleKeydown)
     this.deactivate()
   }
 
@@ -42,10 +43,8 @@ export default class extends Controller {
     this.bannerTarget.classList.remove("hidden")
 
     // Ajouter les listeners pour le hover
-    document.addEventListener("mouseover", this.boundHandleMouseMove)
-    document.addEventListener("mouseout", this.boundHandleMouseOut)
-
-    console.log("Debug Design Mode: ACTIVATED")
+    document.addEventListener("mouseover", this.handleMouseMove)
+    document.addEventListener("mouseout", this.handleMouseOut)
   }
 
   deactivate() {
@@ -60,10 +59,8 @@ export default class extends Controller {
     }
 
     // Retirer les listeners
-    document.removeEventListener("mouseover", this.boundHandleMouseMove)
-    document.removeEventListener("mouseout", this.boundHandleMouseOut)
-
-    console.log("Debug Design Mode: DEACTIVATED")
+    document.removeEventListener("mouseover", this.handleMouseMove)
+    document.removeEventListener("mouseout", this.handleMouseOut)
   }
 
   handleMouseMove(event) {
@@ -108,8 +105,8 @@ export default class extends Controller {
 
     // Construire le contenu de l'infobulle
     const info = `
-      <div class="text-xs space-y-1">
-        <div class="font-bold text-terracotta">${tagName}.${classes}</div>
+      <div class="text-sm space-y-2">
+        <div class="font-bold text-lg border-b border-gray-700 pb-2 mb-2">${tagName}.${classes}</div>
         <div><strong>BG:</strong> ${bgColor}</div>
         <div><strong>Text:</strong> ${textColor}</div>
         <div><strong>Font:</strong> ${fontFamily}, ${fontSize}, ${fontWeight}</div>
@@ -121,10 +118,6 @@ export default class extends Controller {
 
     this.tooltipTarget.innerHTML = info
     this.tooltipTarget.classList.remove("hidden")
-
-    // Positionner l'infobulle près du curseur
-    this.tooltipTarget.style.left = `${event.pageX + 15}px`
-    this.tooltipTarget.style.top = `${event.pageY + 15}px`
   }
 
   handleMouseOut(event) {
