@@ -16,6 +16,11 @@ class Admin::EventsController < Admin::ApplicationController
   end
 
   def update
+    # Convertir tags (string) en array avant save
+    if params[:event][:tags].present? && params[:event][:tags].is_a?(String)
+      params[:event][:tags] = params[:event][:tags].split(",").map(&:strip).reject(&:blank?)
+    end
+
     if @event.update(event_params)
       redirect_to admin_event_path(@event), notice: "Événement mis à jour avec succès."
     else
@@ -32,8 +37,11 @@ class Admin::EventsController < Admin::ApplicationController
   def event_params
     params.require(:event).permit(
       :titre, :description, :date_debut, :date_fin, :lieu, :adresse_complete,
-      :prix_normal, :gratuit, :type_event, :en_ligne, :photo_url, :lien_inscription,
-      :tags, :professor_id
+      :prix_normal, :prix_reduit, :gratuit, :type_event,
+      :en_ligne, :en_presentiel,
+      :photo_url, :lien_inscription,
+      :professor_id,
+      tags: []
     )
   end
 end

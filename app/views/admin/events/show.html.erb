@@ -1,0 +1,162 @@
+<div class="mb-6">
+  <%= link_to "← Retour", admin_events_path, class: "text-terracotta hover:underline" %>
+</div>
+
+<div class="bg-white rounded-lg shadow p-6 mb-6">
+  <div class="flex justify-between items-start mb-4">
+    <h1 class="text-2xl font-bold"><%= @event.titre %></h1>
+    <%= link_to "Modifier", edit_admin_event_path(@event), class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+  </div>
+
+  <dl class="space-y-4">
+    <!-- Professeur -->
+    <div>
+      <dt class="font-bold text-gray-700">Animé par</dt>
+      <dd class="text-gray-900"><%= @event.professor.nom %></dd>
+    </div>
+
+    <!-- Type et format -->
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <dt class="font-bold text-gray-700">Type</dt>
+        <dd>
+          <span class="px-2 py-1 rounded <%= @event.type_event == 'atelier' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800' %>">
+            <%= @event.type_event_humanized %>
+          </span>
+        </dd>
+      </div>
+
+      <div>
+        <dt class="font-bold text-gray-700">Format</dt>
+        <dd class="space-x-2">
+          <% if @event.en_presentiel %>
+            <span class="px-2 py-1 rounded bg-green-100 text-green-800">Présentiel</span>
+          <% end %>
+          <% if @event.en_ligne %>
+            <span class="px-2 py-1 rounded bg-blue-100 text-blue-800">En ligne</span>
+          <% end %>
+        </dd>
+      </div>
+    </div>
+
+    <!-- Dates -->
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <dt class="font-bold text-gray-700">Date de début</dt>
+        <dd class="text-gray-900"><%= @event.date_debut.strftime("%d/%m/%Y à %H:%M") %></dd>
+      </div>
+
+      <div>
+        <dt class="font-bold text-gray-700">Date de fin</dt>
+        <dd class="text-gray-900"><%= @event.date_fin.strftime("%d/%m/%Y à %H:%M") %></dd>
+      </div>
+    </div>
+
+    <div>
+      <dt class="font-bold text-gray-700">Durée</dt>
+      <dd class="text-gray-900">
+        <% if @event.duree_minutes %>
+          <% heures = @event.duree_minutes / 60 %>
+          <% minutes = @event.duree_minutes % 60 %>
+          <%= "#{heures}h#{minutes.to_s.rjust(2, '0')}" %>
+        <% else %>
+          —
+        <% end %>
+      </dd>
+    </div>
+
+    <!-- Lieu -->
+    <div>
+      <dt class="font-bold text-gray-700">Ville/Lieu</dt>
+      <dd class="text-gray-900"><%= @event.lieu %></dd>
+    </div>
+
+    <% if @event.adresse_complete.present? %>
+      <div>
+        <dt class="font-bold text-gray-700">Adresse complète</dt>
+        <dd class="text-gray-900"><%= @event.adresse_complete %></dd>
+      </div>
+    <% end %>
+
+    <!-- Prix -->
+    <div>
+      <dt class="font-bold text-gray-700">Tarifs</dt>
+      <dd class="text-gray-900">
+        <% if @event.gratuit %>
+          <span class="px-2 py-1 rounded bg-green-100 text-green-800 font-bold">GRATUIT</span>
+        <% else %>
+          <% if @event.prix_normal.present? %>
+            <span class="font-medium"><%= number_to_currency(@event.prix_normal, unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></span>
+          <% end %>
+          <% if @event.prix_reduit.present? %>
+            <span class="text-gray-600">
+              (réduit : <%= number_to_currency(@event.prix_reduit, unit: "€", separator: ",", delimiter: " ", format: "%n %u") %>)
+            </span>
+          <% end %>
+        <% end %>
+      </dd>
+    </div>
+
+    <!-- Tags -->
+    <% if @event.tags.present? %>
+      <div>
+        <dt class="font-bold text-gray-700">Tags</dt>
+        <dd class="flex flex-wrap gap-2">
+          <% @event.tags.each do |tag| %>
+            <span class="px-2 py-1 rounded bg-terracotta-light text-terracotta-dark text-sm"><%= tag %></span>
+          <% end %>
+        </dd>
+      </div>
+    <% end %>
+
+    <!-- Description -->
+    <% if @event.description.present? %>
+      <div>
+        <dt class="font-bold text-gray-700">Description</dt>
+        <dd class="text-gray-900 whitespace-pre-wrap"><%= @event.description %></dd>
+      </div>
+    <% end %>
+
+    <!-- Photo -->
+    <% if @event.photo_url.present? %>
+      <div>
+        <dt class="font-bold text-gray-700">Photo</dt>
+        <dd>
+          <img src="<%= @event.photo_url %>" alt="<%= @event.titre %>" class="max-w-md rounded shadow">
+        </dd>
+      </div>
+    <% end %>
+
+    <!-- Métadonnées -->
+    <div class="border-t pt-4 mt-6">
+      <h3 class="font-bold text-gray-700 mb-2">Métadonnées</h3>
+      <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
+        <div>
+          <span class="font-medium">Créé le :</span>
+          <%= @event.created_at.strftime("%d/%m/%Y à %H:%M") %>
+        </div>
+        <div>
+          <span class="font-medium">Mis à jour le :</span>
+          <%= @event.updated_at.strftime("%d/%m/%Y à %H:%M") %>
+        </div>
+        <% if @event.scraped_url.present? %>
+          <div>
+            <span class="font-medium">Source :</span>
+            <%= link_to @event.scraped_url.nom || @event.scraped_url.url.truncate(40),
+                        admin_scraped_url_path(@event.scraped_url),
+                        class: "text-terracotta hover:underline" %>
+          </div>
+        <% else %>
+          <div>
+            <span class="font-medium">Source :</span>
+            Création manuelle
+          </div>
+        <% end %>
+        <div>
+          <span class="font-medium">Slug :</span>
+          <%= @event.slug %>
+        </div>
+      </div>
+    </div>
+  </dl>
+</div>

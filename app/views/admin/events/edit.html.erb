@@ -1,44 +1,152 @@
+<div class="mb-6">
+  <%= link_to "← Retour", admin_events_path, class: "text-terracotta hover:underline" %>
+</div>
+
 <h1 class="text-3xl font-bold mb-6">Modifier Événement</h1>
 
 <div class="bg-white rounded-lg shadow p-6">
-  <%= form_with model: [:admin, @event], class: "space-y-4" do |f| %>
+  <%= form_with model: [:admin, @event], class: "space-y-6" do |f| %>
     <% if @event.errors.any? %>
       <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded">
-        <ul><% @event.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %></ul>
+        <h3 class="font-bold mb-2">Erreurs :</h3>
+        <ul class="list-disc list-inside">
+          <% @event.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
       </div>
     <% end %>
 
-    <div>
-      <%= f.label :titre, class: "block font-bold mb-1" %>
-      <%= f.text_field :titre, class: "w-full px-3 py-2 border rounded" %>
-    </div>
+    <!-- Informations de base -->
+    <div class="border-b pb-4">
+      <h2 class="text-xl font-bold mb-4">Informations de base</h2>
 
-    <div>
-      <%= f.label :description, class: "block font-bold mb-1" %>
-      <%= f.text_area :description, class: "w-full px-3 py-2 border rounded", rows: 5 %>
-    </div>
+      <div class="space-y-4">
+        <div>
+          <%= f.label :titre, "Titre", class: "block font-bold mb-1" %>
+          <%= f.text_field :titre, class: "w-full px-3 py-2 border rounded", required: true %>
+        </div>
 
-    <div class="grid grid-cols-2 gap-4">
-      <div>
-        <%= f.label :date_debut, class: "block font-bold mb-1" %>
-        <%= f.datetime_local_field :date_debut, class: "w-full px-3 py-2 border rounded" %>
+        <div>
+          <%= f.label :description, "Description", class: "block font-bold mb-1" %>
+          <%= f.text_area :description, class: "w-full px-3 py-2 border rounded", rows: 5 %>
+        </div>
+
+        <div>
+          <%= f.label :professor_id, "Animé par (Professeur)", class: "block font-bold mb-1" %>
+          <%= f.collection_select :professor_id,
+                                   Professor.order(:nom),
+                                   :id,
+                                   :nom,
+                                   { prompt: "Sélectionner un professeur" },
+                                   class: "w-full px-3 py-2 border rounded" %>
+        </div>
+
+        <div>
+          <%= f.label :type_event, "Type", class: "block font-bold mb-1" %>
+          <%= f.select :type_event,
+                       [['Atelier', 'atelier'], ['Stage', 'stage']],
+                       {},
+                       class: "w-full px-3 py-2 border rounded" %>
+        </div>
+
+        <div>
+          <%= f.label :tags, "Tags (séparés par des virgules)", class: "block font-bold mb-1" %>
+          <%= f.text_field :tags,
+                          value: @event.tags&.join(", "),
+                          class: "w-full px-3 py-2 border rounded",
+                          placeholder: "Contact Improvisation, Danse des 5 Rythmes" %>
+          <p class="text-sm text-gray-600 mt-1">Ex: Contact Improvisation, Danse des 5 Rythmes</p>
+        </div>
       </div>
-      <div>
-        <%= f.label :date_fin, class: "block font-bold mb-1" %>
-        <%= f.datetime_local_field :date_fin, class: "w-full px-3 py-2 border rounded" %>
+    </div>
+
+    <!-- Dates et horaires -->
+    <div class="border-b pb-4">
+      <h2 class="text-xl font-bold mb-4">Dates et horaires</h2>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <%= f.label :date_debut, "Date de début", class: "block font-bold mb-1" %>
+          <%= f.datetime_local_field :date_debut, class: "w-full px-3 py-2 border rounded", required: true %>
+        </div>
+        <div>
+          <%= f.label :date_fin, "Date de fin", class: "block font-bold mb-1" %>
+          <%= f.datetime_local_field :date_fin, class: "w-full px-3 py-2 border rounded", required: true %>
+        </div>
       </div>
     </div>
 
-    <div>
-      <%= f.label :lieu, class: "block font-bold mb-1" %>
-      <%= f.text_field :lieu, class: "w-full px-3 py-2 border rounded" %>
+    <!-- Lieu -->
+    <div class="border-b pb-4">
+      <h2 class="text-xl font-bold mb-4">Lieu</h2>
+
+      <div class="space-y-4">
+        <div>
+          <%= f.label :lieu, "Ville/Lieu", class: "block font-bold mb-1" %>
+          <%= f.text_field :lieu, class: "w-full px-3 py-2 border rounded", placeholder: "Paris" %>
+        </div>
+
+        <div>
+          <%= f.label :adresse_complete, "Adresse complète", class: "block font-bold mb-1" %>
+          <%= f.text_field :adresse_complete, class: "w-full px-3 py-2 border rounded", placeholder: "123 Rue Example, 75001 Paris" %>
+        </div>
+      </div>
     </div>
 
-    <div>
-      <%= f.label :prix_normal, class: "block font-bold mb-1" %>
-      <%= f.number_field :prix_normal, step: 0.01, class: "w-full px-3 py-2 border rounded" %>
+    <!-- Prix -->
+    <div class="border-b pb-4">
+      <h2 class="text-xl font-bold mb-4">Tarifs</h2>
+
+      <div class="grid grid-cols-3 gap-4">
+        <div>
+          <%= f.label :prix_normal, "Prix normal (€)", class: "block font-bold mb-1" %>
+          <%= f.number_field :prix_normal, step: 0.01, class: "w-full px-3 py-2 border rounded", placeholder: "25.00" %>
+        </div>
+
+        <div>
+          <%= f.label :prix_reduit, "Prix réduit (€)", class: "block font-bold mb-1" %>
+          <%= f.number_field :prix_reduit, step: 0.01, class: "w-full px-3 py-2 border rounded", placeholder: "18.00" %>
+        </div>
+
+        <div class="flex items-end">
+          <label class="flex items-center">
+            <%= f.check_box :gratuit, class: "mr-2" %>
+            <span class="font-bold">Gratuit</span>
+          </label>
+        </div>
+      </div>
     </div>
 
+    <!-- Format -->
+    <div class="border-b pb-4">
+      <h2 class="text-xl font-bold mb-4">Format</h2>
+
+      <div class="space-y-2">
+        <label class="flex items-center">
+          <%= f.check_box :en_presentiel, class: "mr-2" %>
+          <span class="font-bold">En présentiel</span>
+        </label>
+
+        <label class="flex items-center">
+          <%= f.check_box :en_ligne, class: "mr-2" %>
+          <span class="font-bold">En ligne</span>
+        </label>
+      </div>
+      <p class="text-sm text-gray-600 mt-2">Tu peux cocher les deux pour un événement hybride</p>
+    </div>
+
+    <!-- Médias -->
+    <div class="border-b pb-4">
+      <h2 class="text-xl font-bold mb-4">Médias (optionnel)</h2>
+
+      <div>
+        <%= f.label :photo_url, "URL de la photo", class: "block font-bold mb-1" %>
+        <%= f.url_field :photo_url, class: "w-full px-3 py-2 border rounded", placeholder: "https://example.com/image.jpg" %>
+      </div>
+    </div>
+
+    <!-- Actions -->
     <div class="flex gap-4 pt-4">
       <%= f.submit "Enregistrer", class: "bg-terracotta text-white px-6 py-2 rounded hover:bg-terracotta-dark cursor-pointer" %>
       <%= link_to "Annuler", admin_event_path(@event), class: "bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600" %>
