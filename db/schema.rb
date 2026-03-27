@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_27_113924) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_27_120548) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -98,6 +98,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_27_113924) do
   end
 
   create_table "scraped_urls", force: :cascade do |t|
+    t.text "commentaire"
     t.datetime "created_at", null: false
     t.text "derniere_version_html"
     t.integer "erreurs_consecutives", default: 0

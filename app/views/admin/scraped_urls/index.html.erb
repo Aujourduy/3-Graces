@@ -7,10 +7,10 @@
   <table class="min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50">
       <tr>
-        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">URL</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Source</th>
         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Professeur(s)</th>
         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Statut</th>
-        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Dernier scraping</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Dernière maj</th>
         <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
       </tr>
     </thead>
@@ -18,7 +18,12 @@
       <% @scraped_urls.each do |url| %>
         <tr>
           <td class="px-6 py-4">
-            <%= link_to url.url.truncate(50), admin_scraped_url_path(url), class: "text-terracotta hover:underline" %>
+            <%= link_to admin_scraped_url_path(url), class: "text-terracotta hover:underline" do %>
+              <div class="font-medium"><%= url.nom.presence || url.url.truncate(40) %></div>
+              <% if url.nom.present? %>
+                <div class="text-xs text-gray-500"><%= url.url.truncate(50) %></div>
+              <% end %>
+            <% end %>
           </td>
           <td class="px-6 py-4 text-sm text-gray-900">
             <%= url.professors.map(&:nom).join(", ").presence || "—" %>

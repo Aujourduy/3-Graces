@@ -15,11 +15,26 @@
   </div>
 
   <div>
+    <%= f.label :nom, "Nom (label descriptif)", class: "block font-bold mb-2" %>
+    <%= f.text_field :nom, class: "w-full px-3 py-2 border rounded", placeholder: "Ex: Agenda Danse Contact Paris" %>
+    <p class="text-sm text-gray-600 mt-1">Nom lisible pour identifier facilement cette source dans l'admin.</p>
+  </div>
+
+  <div>
     <%= f.label :statut_scraping, "Statut", class: "block font-bold mb-2" %>
     <%= f.select :statut_scraping,
                  [['Actif', 'actif'], ['Pause', 'pause'], ['Erreur', 'erreur']],
                  {},
                  class: "w-full px-3 py-2 border rounded" %>
+  </div>
+
+  <div>
+    <%= f.label :commentaire, "Commentaire (notes personnelles)", class: "block font-bold mb-2" %>
+    <%= f.text_area :commentaire,
+                    class: "w-full px-3 py-2 border rounded",
+                    rows: 4,
+                    placeholder: "Notes personnelles sur cette source..." %>
+    <p class="text-sm text-gray-600 mt-1">Tes notes personnelles (non utilisées par le scraping).</p>
   </div>
 
   <div>

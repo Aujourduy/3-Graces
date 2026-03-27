@@ -64,6 +64,11 @@
     </div>
 
     <div>
+      <dt class="font-bold text-gray-700">Commentaire</dt>
+      <dd class="text-gray-900 whitespace-pre-wrap"><%= @scraped_url.commentaire.presence || "—" %></dd>
+    </div>
+
+    <div>
       <dt class="font-bold text-gray-700">Notes correctrices</dt>
       <dd class="text-gray-900 whitespace-pre-wrap"><%= @scraped_url.notes_correctrices.presence || "Aucune note" %></dd>
     </div>

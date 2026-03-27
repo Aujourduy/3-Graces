@@ -78,6 +78,6 @@ class Admin::ScrapedUrlsController < Admin::ApplicationController
   end
 
   def scraped_url_params
-    params.require(:scraped_url).permit(:url, :notes_correctrices, :statut_scraping)
+    params.require(:scraped_url).permit(:url, :nom, :commentaire, :notes_correctrices, :statut_scraping)
   end
 end
