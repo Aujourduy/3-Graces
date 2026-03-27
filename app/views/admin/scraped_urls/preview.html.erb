@@ -3,7 +3,7 @@
     <%= link_to "← Retour", admin_scraped_url_path(@scraped_url), class: "text-terracotta hover:underline" %>
   </div>
   <div>
-    <%= link_to "🔄 Re-parser avec Claude", admin_scraped_url_preview_path(@scraped_url, force_parse: true),
+    <%= link_to "🔄 Re-parser avec Claude", preview_admin_scraped_url_path(@scraped_url, force_parse: true),
                 class: "bg-terracotta text-white px-4 py-2 rounded hover:bg-terracotta-dark",
                 data: { confirm: "Re-parser avec Claude prendra ~30-60 secondes. Continuer ?" } %>
   </div>
