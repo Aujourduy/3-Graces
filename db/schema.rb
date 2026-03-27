@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_26_003542) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_27_113924) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -90,14 +90,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_26_003542) do
     t.datetime "created_at", null: false
     t.string "email"
     t.string "nom"
+    t.string "nom_normalise"
     t.string "site_web"
+    t.string "status", default: "auto", null: false
     t.datetime "updated_at", null: false
+    t.index ["nom_normalise"], name: "index_professors_on_nom_normalise", unique: true
   end
 
   create_table "scraped_urls", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "derniere_version_html"
     t.integer "erreurs_consecutives", default: 0
+    t.string "nom"
     t.text "notes_correctrices"
     t.string "statut_scraping", default: "actif"
     t.datetime "updated_at", null: false

@@ -7,15 +7,17 @@ puts "🌱 Seeding database with realistic data..."
 puts "\n📊 Creating scraped URLs..."
 
 scraped_urls_data = [
-  { url: "https://example.com/sophie-marchand", notes_correctrices: "Site personnel - scraping actif" },
-  { url: "https://example.com/jean-luc-dubois", notes_correctrices: "Page Facebook - scraping manuel" },
-  { url: "https://example.com/marie-fontaine", notes_correctrices: nil },
-  { url: "https://example.com/pierre-lefebvre", notes_correctrices: "Agenda Google public" },
-  { url: "https://example.com/events/ci-paris", notes_correctrices: "Source collective - plusieurs profs" }
+  { url: "https://example.com/sophie-marchand", nom: "Site de Sophie Marchand", notes_correctrices: "Site personnel - scraping actif" },
+  { url: "https://example.com/jean-luc-dubois", nom: "Site de Jean-Luc Dubois", notes_correctrices: "Page Facebook - scraping manuel" },
+  { url: "https://example.com/marie-fontaine", nom: "Site de Marie Fontaine", notes_correctrices: nil },
+  { url: "https://example.com/pierre-lefebvre", nom: "Agenda de Pierre Lefebvre", notes_correctrices: "Agenda Google public" },
+  { url: "https://example.com/events/ci-paris", nom: "Collectif CI Paris", notes_correctrices: "Source collective - plusieurs profs" },
+  { url: "https://example.com/studio-collectif", nom: "Studio Collectif Paris", notes_correctrices: "Planning mensuel - plusieurs professeurs" }
 ]
 
 scraped_urls = scraped_urls_data.map do |data|
   ScrapedUrl.find_or_create_by!(url: data[:url]) do |su|
+    su.nom = data[:nom]
     su.notes_correctrices = data[:notes_correctrices]
     su.statut_scraping = 'actif'
   end
@@ -33,7 +35,7 @@ professors_data = [
     site_web: "https://example.com/sophie-marchand",
     avatar_url: "https://i.pravatar.cc/300?img=1",
     bio: "Danseuse et chorégraphe spécialisée en Contact Improvisation depuis 15 ans. J'explore les liens entre corps, gravité et relation à l'autre dans mes ateliers.",
-    scraped_url_indices: [ 0 ]
+    scraped_url_indices: [ 0, 5 ]  # Apparaît dans 2 sources (test déduplication)
   },
   {
     nom: "Jean-Luc Dubois",
@@ -49,7 +51,7 @@ professors_data = [
     site_web: "https://example.com/marie-fontaine",
     avatar_url: "https://i.pravatar.cc/300?img=3",
     bio: "Somaticienne formée en Authentic Movement et Body-Mind Centering. Je propose des espaces d'exploration du mouvement conscient et de l'écoute intérieure.",
-    scraped_url_indices: [ 2 ]
+    scraped_url_indices: [ 2, 5 ]  # Apparaît aussi au Studio Collectif
   },
   {
     nom: "Pierre Lefebvre",
@@ -58,6 +60,14 @@ professors_data = [
     avatar_url: "https://i.pravatar.cc/300?img=4",
     bio: "Artiste butô et performeur. Mon travail explore la lenteur, la transformation et les états du corps dans l'immobilité et le mouvement minimal.",
     scraped_url_indices: [ 3 ]
+  },
+  {
+    nom: "Camille Bertrand",
+    email: "camille.bertrand@example.com",
+    site_web: "https://example.com/camille-bertrand",
+    avatar_url: "https://i.pravatar.cc/300?img=5",
+    bio: "Professeure de yoga et danse contemporaine. Je propose une approche holistique du mouvement alliant conscience corporelle et créativité.",
+    scraped_url_indices: [ 5 ]  # Uniquement au Studio Collectif
   }
 ]
 
