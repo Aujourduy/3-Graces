@@ -49,12 +49,17 @@ class ClaudeCliIntegration
   private
 
   def self.build_prompt(html, notes_correctrices)
+    # Load global instructions (singleton Setting)
+    global_instructions = Setting.instance.claude_global_instructions
+
     <<~PROMPT
       Tu es un assistant de parsing d'événements de danse.
 
       Parse le HTML ci-dessous et extrais tous les événements (ateliers/stages de danse).
 
-      #{notes_correctrices.present? ? "NOTES CORRECTRICES :\n#{notes_correctrices}\n\n" : ""}
+      #{global_instructions.present? ? "CONSIGNES GLOBALES :\n#{global_instructions}\n\n" : ""}
+
+      #{notes_correctrices.present? ? "NOTES CORRECTRICES (pour cette URL spécifiquement) :\n#{notes_correctrices}\n\n" : ""}
 
       Retourne un JSON avec cette structure :
       {

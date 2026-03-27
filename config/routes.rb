@@ -46,6 +46,7 @@ Rails.application.routes.draw do
     end
     resources :change_logs, only: [ :index, :show ]
     resources :events, only: [ :index, :show, :edit, :update ]
+    resource :settings, only: [ :edit, :update ]
   end
 
   # Tailwind test page (temporary - for validation only)
