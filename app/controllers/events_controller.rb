@@ -2,6 +2,15 @@ class EventsController < ApplicationController
   include Pagy::Method
 
   def index
+    # Detect if any filters are active
+    @filtered = params[:date_debut].present? ||
+                params[:atelier].present? ||
+                params[:stage].present? ||
+                params[:en_ligne].present? ||
+                params[:en_presentiel].present? ||
+                params[:gratuit].present? ||
+                params[:lieu].present?
+
     # Apply filters to base scope
     scope = apply_filters(Event.futurs.includes(:professor))
 
