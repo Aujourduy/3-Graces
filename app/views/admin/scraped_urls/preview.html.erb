@@ -1,8 +1,20 @@
-<div class="mb-6">
-  <%= link_to "← Retour", admin_scraped_url_path(@scraped_url), class: "text-terracotta hover:underline" %>
+<div class="mb-6 flex justify-between items-center">
+  <div>
+    <%= link_to "← Retour", admin_scraped_url_path(@scraped_url), class: "text-terracotta hover:underline" %>
+  </div>
+  <div>
+    <%= link_to "🔄 Re-parser avec Claude", admin_scraped_url_preview_path(@scraped_url, force_parse: true),
+                class: "bg-terracotta text-white px-4 py-2 rounded hover:bg-terracotta-dark",
+                data: { confirm: "Re-parser avec Claude prendra ~30-60 secondes. Continuer ?" } %>
+  </div>
 </div>
 
-<h1 class="text-3xl font-bold mb-6">Preview Scraping - <%= @scraped_url.nom || @scraped_url.url %></h1>
+<h1 class="text-3xl font-bold mb-6">
+  Preview Scraping - <%= @scraped_url.nom || @scraped_url.url %>
+  <% if params[:force_parse] == "true" %>
+    <span class="text-sm text-gray-500">(Re-parsing en cours...)</span>
+  <% end %>
+</h1>
 
 <% if @error %>
   <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded mb-6">
@@ -57,6 +69,13 @@
     <div class="p-6">
       <!-- Parsed results tab -->
       <div id="content-parsed" class="tab-content">
+        <% if params[:force_parse] != "true" %>
+          <div class="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded mb-4">
+            ℹ️ <strong>Données en cache</strong> - Événements déjà en base de données.
+            Cliquez sur "Re-parser avec Claude" pour forcer une nouvelle analyse.
+          </div>
+        <% end %>
+
         <% if @parse_result[:error] %>
           <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded">
             <%= @parse_result[:error] %>

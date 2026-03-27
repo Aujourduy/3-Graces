@@ -58,19 +58,41 @@ class Admin::ScrapedUrlsController < Admin::ApplicationController
   end
 
   def preview
-    # Dry-run: fetch + parse without DB write
-    scraper = ScrapingEngine.detect_scraper(@scraped_url.url)
-    result = scraper.fetch(@scraped_url.url)
-
-    if result[:error]
-      @error = result[:error]
+    # Use cached data (HTML + Markdown + previous parsing) instead of re-fetching
+    if @scraped_url.derniere_version_html.blank?
+      @error = "Aucun HTML en cache. Lancez un scraping d'abord."
     else
-      @html = result[:html]
-      @parse_result = ClaudeCliIntegration.parse_and_generate(
-        @scraped_url,
-        result[:html],
-        @scraped_url.notes_correctrices
-      )
+      @html = @scraped_url.derniere_version_html
+
+      # Use previously parsed events if available, otherwise parse now
+      if params[:force_parse] == "true"
+        # Force re-parsing with Claude (takes ~30-60s)
+        @parse_result = ClaudeCliIntegration.parse_and_generate(
+          @scraped_url,
+          @html,
+          @scraped_url.notes_correctrices
+        )
+      else
+        # Show events already in database (instant)
+        events = Event.where(scraped_url_id: @scraped_url.id).limit(20).map do |e|
+          {
+            titre: e.titre,
+            description: e.description,
+            tags: e.tags,
+            date_debut: e.date_debut.iso8601,
+            date_fin: e.date_fin.iso8601,
+            lieu: e.lieu,
+            adresse_complete: e.adresse_complete,
+            prix_normal: e.prix_normal,
+            prix_reduit: e.prix_reduit,
+            type_event: e.type_event,
+            gratuit: e.gratuit,
+            en_ligne: e.en_ligne,
+            en_presentiel: e.en_presentiel
+          }
+        end
+        @parse_result = { events: events }
+      end
     end
 
     render :preview
