@@ -42,6 +42,7 @@ Rails.application.routes.draw do
       member do
         post :scrape_now
         get :preview
+        get :raw_html
       end
     end
     resources :change_logs, only: [ :index, :show ]

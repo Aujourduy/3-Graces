@@ -98,6 +98,15 @@ class Admin::ScrapedUrlsController < Admin::ApplicationController
     render :preview
   end
 
+  def raw_html
+    # Serve raw HTML for iframe rendering
+    if @scraped_url.derniere_version_html.present?
+      render html: @scraped_url.derniere_version_html.html_safe, layout: false
+    else
+      render html: "<h1>Aucun HTML disponible</h1>".html_safe, layout: false
+    end
+  end
+
   private
 
   def find_scraped_url

@@ -59,6 +59,9 @@
         <button onclick="showTab('data')" id="tab-data" class="tab-button px-6 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300">
           Data attributes
         </button>
+        <button onclick="showTab('html-view')" id="tab-html-view" class="tab-button px-6 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300">
+          HTML view
+        </button>
         <button onclick="showTab('html')" id="tab-html" class="tab-button px-6 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300">
           HTML brut
         </button>
@@ -106,7 +109,24 @@
         <% end %>
       </div>
 
-      <!-- HTML tab -->
+      <!-- HTML view tab (rendered) -->
+      <div id="content-html-view" class="tab-content hidden">
+        <% if @html.present? %>
+          <div class="mb-4 text-sm text-gray-600">
+            ⚠️ Rendu du HTML scrapé dans un iframe isolé (CSS et JS chargés depuis les URLs originales)
+          </div>
+          <iframe
+            src="<%= raw_html_admin_scraped_url_path(@scraped_url) %>"
+            class="w-full border border-gray-300 rounded"
+            style="min-height: 800px;"
+            sandbox="allow-same-origin allow-scripts"
+          ></iframe>
+        <% else %>
+          <div class="text-gray-500 italic">Aucun HTML disponible.</div>
+        <% end %>
+      </div>
+
+      <!-- HTML tab (source code) -->
       <div id="content-html" class="tab-content hidden">
         <% if @html.present? %>
           <pre class="bg-gray-50 p-4 rounded overflow-x-auto text-xs"><%= @html %></pre>
