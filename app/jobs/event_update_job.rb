@@ -34,23 +34,35 @@ class EventUpdateJob < ApplicationJob
   private
 
   def create_or_update_event(scraped_url, event_data)
+    # Skip events without required dates
+    return if event_data[:date_debut].blank? || event_data[:date_fin].blank?
+
+    # Parse dates
+    date_debut = Time.zone.parse(event_data[:date_debut])
+    date_fin = Time.zone.parse(event_data[:date_fin])
+
+    # Calculate type_event based on duration (ignore Claude's type_event)
+    # < 5h → atelier, >= 5h → stage
+    duration_hours = (date_fin - date_debut) / 3600.0
+    type_event = duration_hours < 5 ? "atelier" : "stage"
+
     # Find or create event
     # Use scraped_url + date_debut + titre as unique key
     event = Event.find_or_initialize_by(
       scraped_url: scraped_url,
-      date_debut: Time.zone.parse(event_data[:date_debut]),
+      date_debut: date_debut,
       titre: event_data[:titre]
     )
 
     event.assign_attributes(
       description: event_data[:description],
       tags: event_data[:tags],
-      date_fin: Time.zone.parse(event_data[:date_fin]),
+      date_fin: date_fin,
       lieu: event_data[:lieu],
       adresse_complete: event_data[:adresse_complete],
       prix_normal: event_data[:prix_normal],
       prix_reduit: event_data[:prix_reduit],
-      type_event: event_data[:type_event],
+      type_event: type_event,
       gratuit: event_data[:gratuit],
       en_ligne: event_data[:en_ligne],
       en_presentiel: event_data[:en_presentiel],
