@@ -99,8 +99,8 @@ class Admin::ScrapedUrlsController < Admin::ApplicationController
       return
     end
 
-    # Call HtmlCleaner to extract data-attributes and convert to Markdown
-    result = HtmlCleaner.extract_and_convert(@scraped_url.derniere_version_html)
+    # Call HtmlCleaner to clean and convert to Markdown
+    result = HtmlCleaner.clean_and_convert(@scraped_url.derniere_version_html)
 
     # Save results
     @scraped_url.update!(

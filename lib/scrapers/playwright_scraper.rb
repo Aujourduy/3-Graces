@@ -9,7 +9,7 @@ module Scrapers
       Playwright.create(playwright_cli_executable_path: "./node_modules/.bin/playwright") do |playwright|
         playwright.chromium.launch(headless: true) do |browser|
           context = browser.new_context(
-            user_agent: USER_AGENT,
+            userAgent: USER_AGENT,
             viewport: { width: 1920, height: 1080 }
           )
 
@@ -17,7 +17,7 @@ module Scrapers
 
           begin
             # Navigate to URL with 60s timeout
-            page.goto(url, wait_until: "networkidle", timeout: 60_000)
+            page.goto(url, waitUntil: "networkidle", timeout: 60_000)
 
             # Wait for JavaScript to fully execute
             page.wait_for_timeout(2000) # 2s additional wait for lazy-loaded content
