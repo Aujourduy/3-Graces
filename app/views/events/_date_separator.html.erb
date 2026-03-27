@@ -1,6 +1,8 @@
 <%# locals: date %>
-<div class="my-8 first:mt-0">
-  <h2 class="text-terracotta font-bold text-xl">
+<div class="flex items-center gap-4 my-6 first:mt-0">
+  <hr class="flex-grow border-gray-300">
+  <time datetime="<%= date.iso8601 %>" class="text-gray-600 italic text-lg whitespace-nowrap">
     <%= l(date, format: :long) %>
-  </h2>
+  </time>
+  <hr class="flex-grow border-gray-300">
 </div>

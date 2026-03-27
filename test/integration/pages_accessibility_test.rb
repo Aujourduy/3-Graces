@@ -55,7 +55,7 @@ class PagesAccessibilityTest < ActionDispatch::IntegrationTest
   test "events index is accessible" do
     get evenements_path, headers: @headers
     assert_response :success
-    assert_select "h1", text: /Liste des événements/
+    assert_select "h1", text: /Agenda des Ateliers/
   end
 
   test "event show page is accessible" do
