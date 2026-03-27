@@ -290,6 +290,8 @@ GEM
     regexp_parser (2.11.3)
     reline (0.6.3)
       io-console (~> 0.5)
+    reverse_markdown (3.0.2)
+      nokogiri
     robots (0.10.1)
     rubocop (1.85.1)
       json (~> 2.3)
@@ -404,6 +406,7 @@ DEPENDENCIES
   propshaft
   puma (>= 5.0)
   rails (~> 8.1.2)
+  reverse_markdown
   robots
   rubocop-rails-omakase
   solid_cable

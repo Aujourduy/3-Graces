@@ -58,6 +58,9 @@ gem "robots"
 # Pagination
 gem "pagy"
 
+# Convert HTML to Markdown for Claude parsing optimization
+gem "reverse_markdown"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
