@@ -1,4 +1,4 @@
-# 3 Graces — Règles Projet
+# Stop & Dance — Règles Projet
 
 ## SURCHARGES DU CLAUDE.MD GLOBAL
 
@@ -175,7 +175,7 @@ Epic 1 DÉBUT → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → Epic 1 FIN (Do
 2. **Lancer** `bin/sync-gist.sh`
    - Synchronise vers Gist GitHub (secret)
    - claude.ai peut lire l'état (repo privé inaccessible)
-   - Credentials : ~/.env-3graces (GIST_ID, GIST_TOKEN)
+   - Credentials : ~/.env-stopanddance (GIST_ID, GIST_TOKEN)
 
 3. **Commit** avec docs/etat-projet.md inclus
 
@@ -199,7 +199,7 @@ Epic 1 DÉBUT → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → Epic 1 FIN (Do
 
 ### Réseau et déploiement
 - **Tailscale** : VPN mesh privé, serveur accessible via IP 100.x.x.x
-- **Cloudflare** : DNS + proxy HTTPS pour 3graces.community
+- **Cloudflare** : DNS + proxy HTTPS pour stopand.dance
 - **HTTPS** : Géré par Cloudflare uniquement, PAS par Caddy/Let's Encrypt
 - **Admin** : Peut être restreint au réseau Tailscale (accès VPN uniquement)
 

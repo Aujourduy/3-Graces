@@ -1,4 +1,4 @@
-# SUIVI GLOBAL - 3 Graces
+# SUIVI GLOBAL - Stop & Dance
 
 Historique de toutes les sessions de travail sur le projet.
 

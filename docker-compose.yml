@@ -4,9 +4,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: threegraces
+      POSTGRES_USER: stopanddance
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: threegraces_production
+      POSTGRES_DB: stopanddance_production
     restart: unless-stopped
     networks:
       - app_network
@@ -17,7 +17,7 @@ services:
       - db
     environment:
       RAILS_ENV: production
-      DATABASE_URL: postgresql://threegraces:${DB_PASSWORD}@db/threegraces_production
+      DATABASE_URL: postgresql://stopanddance:${DB_PASSWORD}@db/stopanddance_production
       ADMIN_USERNAME: ${ADMIN_USERNAME}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}
       ALERT_EMAIL: ${ALERT_EMAIL}
@@ -37,7 +37,7 @@ services:
       - db
     environment:
       RAILS_ENV: production
-      DATABASE_URL: postgresql://threegraces:${DB_PASSWORD}@db/threegraces_production
+      DATABASE_URL: postgresql://stopanddance:${DB_PASSWORD}@db/stopanddance_production
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
     command: bundle exec rake solid_queue:start
     volumes:

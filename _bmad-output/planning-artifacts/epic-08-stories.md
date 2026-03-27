@@ -32,8 +32,8 @@ module SeoMetadata
 
   def set_default_meta_tags
     set_meta_tags(
-      site: '3 Graces',
-      title: '3 Graces - Agenda de danse exploratoire',
+      site: 'Stop & Dance',
+      title: 'Stop & Dance - Agenda de danse exploratoire',
       description: 'Agenda de référence des pratiques de danse exploratoires et non-performatives en France.',
       keywords: 'danse, contact improvisation, 5 rythmes, authentic movement, ateliers danse, stages danse, danse exploratoire',
       canonical: request.original_url,
@@ -42,7 +42,7 @@ module SeoMetadata
         type: 'website',
         url: request.original_url,
         image: view_context.image_url('og-default.jpg'),
-        site_name: '3 Graces'
+        site_name: 'Stop & Dance'
       },
       twitter: {
         card: 'summary_large_image',
@@ -66,7 +66,7 @@ module SeoMetadata
         url: evenement_url(event.slug),
         image: event.photo_url || view_context.image_url('og-default.jpg'),
         description: event.description&.truncate(200),
-        site_name: '3 Graces'
+        site_name: 'Stop & Dance'
       },
       twitter: {
         card: 'summary_large_image',

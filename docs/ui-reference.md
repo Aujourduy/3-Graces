@@ -1,4 +1,4 @@
-# UI Reference — 3 Graces
+# UI Reference — Stop & Dance
 
 ## Design System
 

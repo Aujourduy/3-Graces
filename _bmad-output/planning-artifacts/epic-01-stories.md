@@ -296,7 +296,7 @@ volumes:
   caddy_config:
 ```
 
-**⚠️ NOTE CADDY PORTS:** Caddy on ports 8443/8000 cannot obtain Let's Encrypt certificates (needs 80/443). **À résoudre lors de l'implémentation** — either Caddy replaces nginx as unique reverse proxy (Nextcloud + 3 Graces on same Caddy instance), or Caddy behind nginx. Decision deferred to implementation phase.
+**⚠️ NOTE CADDY PORTS:** Caddy on ports 8443/8000 cannot obtain Let's Encrypt certificates (needs 80/443). **À résoudre lors de l'implémentation** — either Caddy replaces nginx as unique reverse proxy (Nextcloud + Stop & Dance on same Caddy instance), or Caddy behind nginx. Decision deferred to implementation phase.
 
 **Caddyfile (auto HTTPS via Let's Encrypt):**
 ```
@@ -453,7 +453,7 @@ class AlertMailer < ApplicationMailer
 
     mail(
       to: ENV['ALERT_EMAIL'],
-      subject: "[3 Graces] CRITICAL: Scraping failed 3x for #{scraped_url.url}"
+      subject: "[Stop & Dance] CRITICAL: Scraping failed 3x for #{scraped_url.url}"
     )
   end
 end

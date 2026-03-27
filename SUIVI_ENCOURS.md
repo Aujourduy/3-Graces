@@ -1,4 +1,4 @@
-# SUIVI EN COURS - 3 Graces
+# SUIVI EN COURS - Stop & Dance
 
 ## 🟢 En cours
 

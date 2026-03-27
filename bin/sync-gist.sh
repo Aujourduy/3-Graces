@@ -1,5 +1,5 @@
 #!/bin/bash
-source ~/.env-3graces
+source ~/.env-stopanddance
 
 # Build JSON payload using jq to avoid escaping issues
 PAYLOAD=$(jq -n --arg content "$(cat docs/etat-projet.md)" \

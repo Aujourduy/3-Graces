@@ -1,4 +1,4 @@
-# 3 Graces - Deployment Guide
+# Stop & Dance - Deployment Guide
 
 ## Production Deployment
 

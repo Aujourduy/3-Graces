@@ -234,7 +234,7 @@ So that I can access all pages from desktop navbar or mobile hamburger menu.
 <!DOCTYPE html>
 <html>
   <head>
-    <title>3 Graces - Agenda danse exploratoire</title>
+    <title>Stop & Dance - Agenda danse exploratoire</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>

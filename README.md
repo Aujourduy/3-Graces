@@ -1,6 +1,6 @@
-# 3 Graces - Community Event Calendar
+# Stop & Dance - Agenda Danse Exploratoire
 
-Rails 8 application for aggregating and displaying events from Paris spiritual/holistic communities.
+Rails 8 application for aggregating and displaying exploratory dance events in France.
 
 ## Prerequisites
 

@@ -34,7 +34,7 @@ classification:
 
 ## Executive Summary
 
-3 Graces est l'agenda de référence exhaustif des pratiques de danse exploratoires et non-performatives en France. Le produit répond à une question simple que Google et Facebook ne savent pas résoudre : "Où trouver un atelier de danse exploratoire ?" (ce soir à Paris, ce week-end à Lyon, la semaine prochaine à Marseille, etc.)
+Stop & Dance est l'agenda de référence exhaustif des pratiques de danse exploratoires et non-performatives en France. Le produit répond à une question simple que Google et Facebook ne savent pas résoudre : "Où trouver un atelier de danse exploratoire ?" (ce soir à Paris, ce week-end à Lyon, la semaine prochaine à Marseille, etc.)
 
 **Utilisateurs cibles :** Danseurs occasionnels ou réguliers qui veulent découvrir de nouvelles pratiques exploratoires et non-performatives, mais ne savent pas où chercher.
 
@@ -42,9 +42,9 @@ classification:
 
 **Solution :** Interface web simple (read-only) où l'utilisateur voit immédiatement l'agenda complet des ateliers disponibles. Recherche par mots-clés, filtres par plage de temps et localisation pour planifier des déplacements et organiser des "tournées danse".
 
-**Vision future :** Dans 1-2 ans, les danseurs explorateurs en France sauront que TOUTES les propositions de danse exploratoires et non-performatives sont sur 3 Graces. Réflexe automatique pour trouver quoi faire.
+**Vision future :** Dans 1-2 ans, les danseurs explorateurs en France sauront que TOUTES les propositions de danse exploratoires et non-performatives sont sur Stop & Dance. Réflexe automatique pour trouver quoi faire.
 
-**Objectif stratégique secondaire :** 3 Graces sert de canal d'acquisition pour le programme de coaching "Du chaos au vivant" (Duy), les visiteurs étant le public cible exact du coaching.
+**Objectif stratégique secondaire :** Stop & Dance sert de canal d'acquisition pour le programme de coaching "Du chaos au vivant" (Duy), les visiteurs étant le public cible exact du coaching.
 
 ### Ce qui rend ce produit spécial
 
@@ -84,7 +84,7 @@ Le succès utilisateur se mesure quand l'utilisateur trouve un atelier qui l'int
 - Taux de clics sortants vers les profs
 - Nombre de profs référencés en base
 
-**Objectif stratégique :** 3 Graces devient un canal d'acquisition viable pour le programme de coaching "Du chaos au vivant", les visiteurs étant le public cible exact.
+**Objectif stratégique :** Stop & Dance devient un canal d'acquisition viable pour le programme de coaching "Du chaos au vivant", les visiteurs étant le public cible exact.
 
 ### Technical Success
 
@@ -99,7 +99,7 @@ Le système automatisé est fiable quand :
 - Le site référence un nombre significatif de profs de danse exploratoire en France
 - Les visiteurs cliquent régulièrement vers les sites des profs
 - Le système automatisé fonctionne de manière autonome sans intervention quotidienne
-- Les danseurs commencent à considérer 3 Graces comme référence pour trouver des ateliers
+- Les danseurs commencent à considérer Stop & Dance comme référence pour trouver des ateliers
 
 ## Product Scope
 
@@ -153,8 +153,8 @@ Le système automatisé est fiable quand :
 ### Vision (Future)
 
 **État futur à 1-2 ans :**
-- 3 Graces est LA référence exhaustive reconnue pour les pratiques de danse exploratoires et non-performatives en France
-- Les danseurs ont le réflexe automatique : "Je cherche un atelier exploratoire → je vais sur 3 Graces"
+- Stop & Dance est LA référence exhaustive reconnue pour les pratiques de danse exploratoires et non-performatives en France
+- Les danseurs ont le réflexe automatique : "Je cherche un atelier exploratoire → je vais sur Stop & Dance"
 - Le système fonctionne de manière totalement autonome avec minimum d'intervention humaine
 - Canal d'acquisition établi et efficace pour le coaching "Du chaos au vivant"
 
@@ -168,19 +168,19 @@ Le système automatisé est fiable quand :
 
 **Parcours :**
 - **Découverte :** Via Google ("atelier danse libre Paris ce weekend") ou bouche à oreille
-- **Arrivée sur 3 Graces :** Filtre par date et lieu d'abord, puis par type
+- **Arrivée sur Stop & Dance :** Filtre par date et lieu d'abord, puis par type
 - **Préférence visuelle :** Bascule entre mode clair et mode sombre selon confort (utilise souvent le site le soir)
 - **Climax :** En moins de 2 minutes, trouve un atelier qui l'intéresse
 - **Action :** Clique vers le site du prof pour s'inscrire
 - **Engagement :** S'inscrit à la newsletter pour rester informé
 
-**Résolution :** Danny explore de nouvelles pratiques qu'il n'aurait jamais trouvées seul. Il revient sur 3 Graces quand l'envie d'explorer se manifeste — pas forcément chaque semaine, mais c'est son réflexe. Recommande le site à des amis dans la même situation. Parfois découvre un atelier de Duy et ça l'amène vers "Du chaos au vivant".
+**Résolution :** Danny explore de nouvelles pratiques qu'il n'aurait jamais trouvées seul. Il revient sur Stop & Dance quand l'envie d'explorer se manifeste — pas forcément chaque semaine, mais c'est son réflexe. Recommande le site à des amis dans la même situation. Parfois découvre un atelier de Duy et ça l'amène vers "Du chaos au vivant".
 
 ---
 
 ### Journey 2 : Administrateur (Duy)
 
-**Persona :** Duy, créateur et administrateur de 3 Graces. Nouveau papa avec disponibilité très limitée. Besoin d'un système qui tourne sans intervention.
+**Persona :** Duy, créateur et administrateur de Stop & Dance. Nouveau papa avec disponibilité très limitée. Besoin d'un système qui tourne sans intervention.
 
 **Besoin principal :** Savoir que le système fonctionne de manière autonome.
 
@@ -202,7 +202,7 @@ Le système automatisé est fiable quand :
 
 **Parcours :**
 - **Zéro effort :** Son site est scrapé automatiquement, il n'a rien à faire
-- **Trafic qualifié :** Reçoit des inscriptions depuis 3 Graces via clics sortants
+- **Trafic qualifié :** Reçoit des inscriptions depuis Stop & Dance via clics sortants
 - **Stats publiques :** Peut voir combien de fois son profil a été consulté et combien de clics sortants vers son site ont été générés. Page publique simple : `3graces.community/profs/nom-du-prof/stats` (pas de compte, juste une URL unique). Peut basculer en mode clair/sombre pour consulter ses stats confortablement.
 
 **Succès :** Plus d'inscrits qui correspondent à son public idéal (explorateurs, pratiques non-performatives). Ses ateliers se remplissent avec le bon public.

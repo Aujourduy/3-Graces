@@ -1,4 +1,4 @@
-# 3 Graces — Projet BMAD
+# Stop & Dance — Projet BMAD
 
 ## Vision produit
 Agenda de référence des pratiques de danse exploratoires et 
@@ -17,7 +17,7 @@ Interface read-only : consultation + filtres de recherche.
 Zéro CRUD utilisateur.
 
 ## Lien stratégique
-3 Graces sert aussi de canal d'acquisition pour le programme 
+Stop & Dance sert aussi de canal d'acquisition pour le programme 
 de coaching "Du chaos au vivant" (Duy). Les visiteurs sont 
 le public cible exact du coaching.
 

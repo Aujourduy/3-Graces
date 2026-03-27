@@ -1,9 +1,9 @@
-# État du Projet - 3 Graces v2
+# État du Projet - Stop & Dance v2
 
-**Dernière mise à jour :** 2026-03-26 21:45
+**Dernière mise à jour :** 2026-03-27
 **Branch :** main
-**Dernière commit :** 476b93b - "docs: Process maj état projet AVANT chaque commit significatif"
-**Statut :** ✅ **PROJET TERMINÉ - TOUS LES EPICS COMPLÉTÉS**
+**Dernière commit :** (en cours - migration vers Stop & Dance)
+**Statut :** ✅ **PROJET TERMINÉ - TOUS LES EPICS COMPLÉTÉS + MIGRATION EN COURS**
 
 ---
 
@@ -213,7 +213,7 @@
 - Monitoring logs via journalctl
 
 **Domaine :**
-- 3graces.community
+- stopand.dance
 
 **Admin access :**
 - Restreint au réseau Tailscale VPN (optionnel)
@@ -269,13 +269,21 @@ bin/rails scraping:test[1]    # Test parsing sans sauvegarder
 - ✅ Brakeman warnings (redirect, XSS) → config/brakeman.ignore créé
 - ✅ Setup synchronisation Gist pour claude.ai → opérationnel
 
-**Session actuelle (2026-03-26 soir) :**
-- Tentative d'application design Figma (4 itérations) → annulée par utilisateur
-- Reset au commit 476b93b (avant modifications Figma)
-- En attente d'instructions détaillées pour design Figma
+**Session actuelle (2026-03-27) :**
+- ✅ Migration complète du projet "3 Graces" vers "Stop & Dance"
+  - Module Rails : App → StopAndDance
+  - Base de données : threegraces_v2_* → stopanddance_*
+  - Docker : threegraces → stopanddance
+  - Domaine : 3graces.community → stopand.dance
+  - Documentation complète mise à jour
+  - Tests : application démarre correctement
+- ✅ Tag git pré-migration créé : pre-rename-stopanddance
+- ✅ Repo GitHub renommé : 3-Graces → Stop-And-Dance
 
 **Prochaines actions suggérées :**
+- Mise à jour credentials ENV (~/.env-stopanddance)
+- Setup DNS pour stopand.dance
 - Upgrade Ruby 3.3 avant EOL 3.2.10 (31 mars 2026)
-- Tests production sur 3graces.community
+- Tests production sur stopand.dance
 - QA final complet (slash command `/qa`)
 - Documentation utilisateur (guide admin)

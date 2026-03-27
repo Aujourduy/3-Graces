@@ -200,4 +200,4 @@ Résultat: 8 tests, 18 assertions, 0 failures ✅
 ✅ **Toutes sections QA validées (8/8)**
 ✅ **Prêt pour production**
 
-Le projet **3 Graces** est complètement testé et validé pour déploiement.
+Le projet **Stop & Dance** est complètement testé et validé pour déploiement.

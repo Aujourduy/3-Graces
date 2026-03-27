@@ -9,8 +9,8 @@ module SeoMetadata
 
   def set_default_meta_tags
     set_meta_tags(
-      site: "3 Graces",
-      title: "3 Graces - Agenda de danse exploratoire",
+      site: "Stop & Dance",
+      title: "Stop & Dance - Agenda de danse exploratoire",
       description: "Agenda de référence des pratiques de danse exploratoires et non-performatives en France.",
       keywords: "danse, contact improvisation, 5 rythmes, authentic movement, ateliers danse, stages danse, danse exploratoire",
       canonical: request.original_url,
@@ -19,7 +19,7 @@ module SeoMetadata
         type: "website",
         url: request.original_url,
         image: view_context.asset_path("og-default.jpg"),
-        site_name: "3 Graces"
+        site_name: "Stop & Dance"
       },
       twitter: {
         card: "summary_large_image",
@@ -43,7 +43,7 @@ module SeoMetadata
         url: evenement_url(event.slug),
         image: event.photo_url || view_context.asset_path("og-default.jpg"),
         description: event.description&.truncate(200),
-        site_name: "3 Graces"
+        site_name: "Stop & Dance"
       },
       twitter: {
         card: "summary_large_image",
@@ -86,7 +86,7 @@ module SeoMetadata
 
   def set_professor_metadata(professor)
     set_meta_tags(
-      title: "#{professor.nom} - 3 Graces",
+      title: "#{professor.nom} - Stop & Dance",
       description: professor.bio&.truncate(160) || "Profil de #{professor.nom} - Ateliers de danse",
       canonical: professeur_url(professor),
       og: {
@@ -94,7 +94,7 @@ module SeoMetadata
         description: professor.bio&.truncate(160),
         image: professor.avatar_url || view_context.asset_path("og-default.jpg"),
         url: professeur_url(professor),
-        site_name: "3 Graces"
+        site_name: "Stop & Dance"
       },
       twitter: {
         card: "summary_large_image",
@@ -107,7 +107,7 @@ module SeoMetadata
 
   def set_stats_metadata(professor)
     set_meta_tags(
-      title: "Statistiques de #{professor.nom} - 3 Graces",
+      title: "Statistiques de #{professor.nom} - Stop & Dance",
       description: "Page de statistiques publiques pour #{professor.nom}",
       robots: "noindex, follow" # Don't index stats pages
     )

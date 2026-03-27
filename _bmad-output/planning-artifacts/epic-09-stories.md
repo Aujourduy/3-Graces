@@ -62,7 +62,7 @@ end
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Admin - 3 Graces</title>
+    <title>Admin - Stop & Dance</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= display_meta_tags %>
@@ -75,7 +75,7 @@ end
     <nav class="bg-dark-bg text-white py-4 mb-8">
       <div class="container mx-auto px-4">
         <div class="flex items-center justify-between">
-          <h1 class="text-xl font-bold">Admin - 3 Graces</h1>
+          <h1 class="text-xl font-bold">Admin - Stop & Dance</h1>
           <div class="flex items-center gap-6">
             <%= link_to "URLs", admin_scraped_urls_path, class: "hover:text-terracotta" %>
             <%= link_to "Changements", admin_change_logs_path, class: "hover:text-terracotta" %>

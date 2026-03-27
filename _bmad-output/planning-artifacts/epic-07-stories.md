@@ -71,7 +71,7 @@ class ProfessorsController < ApplicationController
 
   def set_professor_metadata(professor)
     set_meta_tags(
-      title: "#{professor.nom} - 3 Graces",
+      title: "#{professor.nom} - Stop & Dance",
       description: professor.bio&.truncate(160) || "Profil de #{professor.nom} - Ateliers de danse",
       og: {
         title: professor.nom,
@@ -83,7 +83,7 @@ class ProfessorsController < ApplicationController
 
   def set_stats_metadata(professor)
     set_meta_tags(
-      title: "Statistiques de #{professor.nom} - 3 Graces",
+      title: "Statistiques de #{professor.nom} - Stop & Dance",
       description: "Page de statistiques publiques pour #{professor.nom}",
       robots: "noindex, follow" # Don't index stats pages
     )
@@ -261,7 +261,7 @@ So that professors can track engagement without needing an account.
     <ul class="text-blue-800 text-sm space-y-1 list-disc list-inside">
       <li>Ces statistiques sont publiques et accessibles à tous</li>
       <li>Elles sont mises à jour en temps réel</li>
-      <li>Vous pouvez partager ce lien pour montrer votre visibilité sur 3 Graces</li>
+      <li>Vous pouvez partager ce lien pour montrer votre visibilité sur Stop & Dance</li>
       <li>Aucun compte n'est requis pour consulter cette page</li>
     </ul>
   </div>

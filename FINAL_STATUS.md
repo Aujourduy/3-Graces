@@ -1,4 +1,4 @@
-# 3 Graces - Projet Terminé ✅
+# Stop & Dance - Projet Terminé ✅
 
 ## TOUS LES EPICS COMPLÉTÉS (2→3→4→5→6→7→8→9→1FIN)
 
@@ -64,7 +64,7 @@
 1. Tester manuellement l'application
 2. Configurer les credentials ( depuis )
 3. Authentifier Claude CLI
-4. Déployer avec === 3 Graces Production Deployment ===
+4. Déployer avec === Stop & Dance Production Deployment ===
 
 ERROR: DB_PASSWORD not set in .env
 5. Configurer cron pour backups quotidiens

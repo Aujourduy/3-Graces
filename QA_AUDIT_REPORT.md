@@ -1,4 +1,4 @@
-# Rapport d'Audit QA - 3 Graces
+# Rapport d'Audit QA - Stop & Dance
 
 **Date** : 26 mars 2026
 **Rôle** : QA Engineer
@@ -271,4 +271,4 @@ L'application est prête pour la production.
 ✅ **Aucun bug critique**
 ✅ **Documentation à jour**
 
-Le projet **3 Graces** est validé pour déploiement en production.
+Le projet **Stop & Dance** est validé pour déploiement en production.
