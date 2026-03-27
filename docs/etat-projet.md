@@ -291,6 +291,19 @@ bin/rails scraping:test[1]    # Test parsing sans sauvegarder
   - Documentation : ui-reference.md, config.yaml
   - Tests : html_scraper_test.rb, pages_accessibility_test.rb
   - Tous les tests passent (71 runs, 0 failures)
+- ✅ Améliorations UI et UX
+  - Navbar desktop identique au mobile (logo + burger + icônes)
+  - Cartes événements restructurées (2 colonnes : avatar 128×128px + 4 lignes texte)
+  - Noms professeurs ajoutés dans seeds
+  - Filtres auto-submit en temps réel (sans bouton Appliquer)
+  - Panneau filtres mobile fonctionnel (slide depuis droite)
+  - Compteurs dynamiques titre ("Agenda complet" vs "Agenda filtré")
+  - Favicon site mis à jour (ICO, SVG, PNG)
+  - Contrôleurs Stimulus : auto_submit + mobile_filters
+- ✅ Configuration serveur
+  - Puma bind sur 0.0.0.0 (accès réseau Tailscale)
+  - Règle CLAUDE.md : toujours lancer avec -b 0.0.0.0 -p 3002
+  - Site accessible via http://100.95.124.70:3002
 
 **Prochaines actions suggérées :**
 - Mise à jour credentials ENV (~/.env-stopanddance)
