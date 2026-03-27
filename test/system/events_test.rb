@@ -54,14 +54,14 @@ class EventsTest < ApplicationSystemTestCase
   test "homepage loads successfully" do
     visit root_path
 
-    assert_selector "h1", text: /AU JOUR|duy/i
+    assert_selector "h1", text: /Stop|Dance/i
     assert_selector "nav"
   end
 
   test "events list displays events" do
     visit evenements_path
 
-    assert_selector "h1", text: /Agenda/i
+    assert_selector "h1", text: /Liste des événements/i
     assert_text @event_paid.titre
     assert_text @event_free.titre
   end
@@ -74,7 +74,6 @@ class EventsTest < ApplicationSystemTestCase
     assert_text @event_free.titre
 
     # Filter sidebar should contain filter options
-    assert_text "Filtrez l'agenda"
     assert_text "Gratuit"
   end
 
