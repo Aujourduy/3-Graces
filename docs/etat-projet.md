@@ -318,6 +318,16 @@ bin/rails scraping:test[1]    # Test parsing sans sauvegarder
   - Ajouter URL, lancer scraping (test + réel), vérifier résultats
   - Debugging, notes correctrices, maintenance
   - Cheatsheet commandes rapides
+- ✅ Documentation interface admin
+  - Guide complet : docs/guide-admin.md
+  - Accès /admin (HTTP Basic Auth : admin/changeme)
+  - CRUD ScrapedUrls, consultation ChangeLogs, édition Events
+  - Scraper maintenant, prévisualiser HTML
+  - Sécurité et configuration credentials
+- ✅ Index documentation centrale
+  - docs/README.md : navigation toutes les docs
+  - Sections par audience (admin, dev, PM)
+  - Quick start dev + premier scraping
 
 **Prochaines actions suggérées :**
 - Mise à jour credentials ENV (~/.env-stopanddance)
