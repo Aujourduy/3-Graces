@@ -458,9 +458,20 @@ bin/rails scraping:test[1]      # Test parsing sans sauvegarder
 
 ## 🚀 Dernière Session (2026-03-29)
 
-### Tests Playwright Complets ✅
+### Correction Critique Playwright ✅
 
-**Module Playwright 100% opérationnel - Aucune correction nécessaire**
+**Problème identifié et corrigé :**
+- `waitUntil: "networkidle"` timeout 10min sur sites Wix (Marc Silvestre)
+- Cause : scripts analytics/tracking Wix font requêtes infinies, jamais "idle"
+- Solution : `waitUntil: "domcontentloaded"` + wait 5s pour JS rendering
+
+**Changements PlaywrightScraper :**
+- `networkidle` → `domcontentloaded`
+- Timeout : 10min → 2min
+- Wait initial : 2s → 5s (meilleur rendu JS)
+- Wait après scroll : 1s → 2s
+
+### Tests Playwright Complets ✅
 
 **Tests effectués :**
 
@@ -483,6 +494,15 @@ bin/rails scraping:test[1]      # Test parsing sans sauvegarder
    - ✅ Contenu Wix détecté
    - Temps : 8-12 secondes
 
+3b. **Site Wix réel - Marc Silvestre** ⭐
+   - URL: `https://www.marcsilvestre.com/agenda-cours-stages-1`
+   - ✅ HTML complet : 419 KB
+   - ✅ Markdown : 5.2 KB (98.8% réduction)
+   - ✅ Mots-clés détectés : agenda, stage, cours, VAGUES, Micadanses
+   - ✅ Scraping complet : 40.7s (8s fetch + conversion)
+   - ❌ AVANT : timeout 10min avec networkidle
+   - ✅ APRÈS : 8s avec domcontentloaded
+
 4. **Intégration ScrapingEngine**
    - ✅ Scraping complet avec détection changements
    - ✅ HTML mis en cache database (2981 chars)
@@ -501,7 +521,8 @@ bin/rails scraping:test[1]      # Test parsing sans sauvegarder
 
 **Comparaison HTTParty vs Playwright :**
 - HTTParty : ⚡ 1-2s, ❌ pas de JS, sites statiques uniquement
-- Playwright : 🐢 3-12s, ✅ JS complet, Wix/React/Vue compatible
+- Playwright : 🐢 8-40s, ✅ JS complet, Wix/React/Vue compatible
+- Playwright optimisé : `domcontentloaded` au lieu de `networkidle` (75x plus rapide sur Wix)
 
 **Rapport complet :** `tmp/PLAYWRIGHT_TEST_REPORT.md`
 

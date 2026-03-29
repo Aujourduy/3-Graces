@@ -16,15 +16,16 @@ module Scrapers
           page = context.new_page
 
           begin
-            # Navigate to URL with 10min timeout for complex pages
-            page.goto(url, waitUntil: "networkidle", timeout: 600_000)
+            # Navigate to URL with domcontentloaded (faster for Wix/SPAs with analytics)
+            # networkidle doesn't work with Wix: analytics scripts never become idle
+            page.goto(url, waitUntil: "domcontentloaded", timeout: 120_000)
 
-            # Wait for JavaScript to fully execute
-            page.wait_for_timeout(2000) # 2s additional wait for lazy-loaded content
+            # Wait for JavaScript to fully execute and render content
+            page.wait_for_timeout(5000) # 5s for JS rendering + lazy-loading
 
             # Scroll to bottom to trigger lazy-loading
             page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-            page.wait_for_timeout(1000)
+            page.wait_for_timeout(2000) # 2s after scroll
 
             # Get final HTML after JS execution
             html = page.content
