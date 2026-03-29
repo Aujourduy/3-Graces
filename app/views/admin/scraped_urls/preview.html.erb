@@ -67,10 +67,20 @@
       <div>
         <div class="text-sm text-gray-600">HTML brut</div>
         <div class="text-2xl font-bold"><%= number_to_human_size(@scraped_url.derniere_version_html&.bytesize || 0) %></div>
+        <% if @scraped_url.derniere_version_html.present? %>
+          <div class="text-xs text-gray-500 mt-1">
+            Mis à jour : <%= time_ago_in_words(@scraped_url.updated_at) %>
+          </div>
+        <% end %>
       </div>
       <div>
         <div class="text-sm text-gray-600">Markdown</div>
         <div class="text-2xl font-bold"><%= number_to_human_size(@scraped_url.derniere_version_markdown&.bytesize || 0) %></div>
+        <% if @scraped_url.derniere_version_markdown.present? %>
+          <div class="text-xs text-gray-500 mt-1">
+            Mis à jour : <%= time_ago_in_words(@scraped_url.updated_at) %>
+          </div>
+        <% end %>
       </div>
       <div>
         <div class="text-sm text-gray-600">Réduction</div>
