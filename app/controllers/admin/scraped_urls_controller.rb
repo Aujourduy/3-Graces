@@ -67,8 +67,11 @@ class Admin::ScrapedUrlsController < Admin::ApplicationController
       return
     end
 
-    # Save HTML result
-    @scraped_url.update!(derniere_version_html: result[:html])
+    # Save HTML result with timestamp
+    @scraped_url.update!(
+      derniere_version_html: result[:html],
+      derniere_version_html_at: Time.current
+    )
 
     redirect_to preview_admin_scraped_url_path(@scraped_url),
                 notice: "HTML téléchargé avec HTTParty (#{result[:html].bytesize} bytes)"
@@ -84,8 +87,11 @@ class Admin::ScrapedUrlsController < Admin::ApplicationController
       return
     end
 
-    # Save HTML result
-    @scraped_url.update!(derniere_version_html: result[:html])
+    # Save HTML result with timestamp
+    @scraped_url.update!(
+      derniere_version_html: result[:html],
+      derniere_version_html_at: Time.current
+    )
 
     redirect_to preview_admin_scraped_url_path(@scraped_url),
                 notice: "HTML téléchargé avec Playwright (#{result[:html].bytesize} bytes)"
@@ -102,10 +108,11 @@ class Admin::ScrapedUrlsController < Admin::ApplicationController
     # Call HtmlCleaner to clean and convert to Markdown
     result = HtmlCleaner.clean_and_convert(@scraped_url.derniere_version_html)
 
-    # Save results
+    # Save results with timestamp
     @scraped_url.update!(
       derniere_version_markdown: result[:markdown],
-      data_attributes: result[:data_attributes]
+      data_attributes: result[:data_attributes],
+      derniere_version_markdown_at: Time.current
     )
 
     redirect_to preview_admin_scraped_url_path(@scraped_url),
@@ -127,6 +134,9 @@ class Admin::ScrapedUrlsController < Admin::ApplicationController
           @html,
           @scraped_url.notes_correctrices
         )
+
+        # Update timestamp after successful parsing
+        @scraped_url.update!(dernier_parsing_claude_at: Time.current)
       else
         # Show events already in database (instant)
         events = Event.where(scraped_url_id: @scraped_url.id).limit(20).map do |e|
