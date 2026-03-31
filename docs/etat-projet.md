@@ -1,8 +1,8 @@
 # État du Projet - Stop & Dance
 
-**Dernière mise à jour :** 2026-03-29
+**Dernière mise à jour :** 2026-03-31
 **Branch :** main
-**Dernière commit :** 699076d
+**Dernière commit :** 530dd55
 **Statut :** ✅ **PROJET COMPLET - Tous les epics terminés + Playwright validé**
 
 ---
@@ -23,7 +23,7 @@
 - 89 tests unitaires (0 failures)
 - CI GitHub Actions : lint + tests + security scan
 - RuboCop : 0 offenses
-- Brakeman : 1 warning (Ruby EOL 3.2.10, non-bloquant)
+- Brakeman : 0 warnings (Ruby EOL ignoré, upgrade Ruby 3.4 planifié)
 
 ---
 
@@ -456,9 +456,29 @@ bin/rails scraping:test[1]      # Test parsing sans sauvegarder
 
 ---
 
-## 🚀 Dernière Session (2026-03-29)
+## 🚀 Dernière Session (2026-03-31)
 
-### Correction Critique Playwright ✅
+### Gestion Warning Brakeman EOL Ruby ✅
+
+**Action effectuée :**
+- Warning Brakeman "Ruby 3.2.10 EOL" ajouté à `.brakeman.ignore`
+- Note documentée : upgrade Ruby 3.4 planifié pour session future
+- Justification : projet reste sécurisé, EOL = pas de nouveaux correctifs mais code actuel sans vulnérabilités connues
+
+**Résultat :**
+- ✅ Brakeman : 0 warnings (3 ignored)
+- ✅ Tests : 89 runs, 0 failures
+- ✅ RuboCop : 0 offenses
+- ✅ CI prêt pour production
+
+**Décision pragmatique :**
+- Option D choisie : ignorer temporairement le warning EOL Ruby
+- Upgrade Ruby 3.4 reporté à session future (dispo limitée, prioriser features)
+- Projet 100% fonctionnel et sécurisé
+
+### Session précédente (2026-03-29)
+
+#### Correction Critique Playwright ✅
 
 **Problème identifié et corrigé :**
 - `waitUntil: "networkidle"` timeout 10min sur sites Wix (Marc Silvestre)
@@ -556,7 +576,8 @@ bin/rails scraping:test[1]      # Test parsing sans sauvegarder
 4. Vérifier utilisation mémoire Chromium headless
 
 **Maintenance système :**
-- Upgrade Ruby 3.3 avant EOL 3.2.10 (31 mars 2026)
+- ~~Upgrade Ruby 3.3 avant EOL 3.2.10 (31 mars 2026)~~ → reporté (warning ignoré dans Brakeman)
+- Upgrade Ruby 3.4 planifié pour session future (quand temps disponible)
 - Mise à jour credentials ENV (ADMIN_USERNAME, ADMIN_PASSWORD)
 - Setup DNS pour stopand.dance
 - Tests complets production sur stopand.dance
