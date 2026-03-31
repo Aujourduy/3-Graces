@@ -1,0 +1,85 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-gray-900">Professeurs</h1>
+    <p class="mt-2 text-sm text-gray-600">Gérer et vérifier les professeurs détectés automatiquement</p>
+  </div>
+
+  <% if @pending_review_count > 0 %>
+    <div class="mb-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+      <div class="flex items-center">
+        <span class="text-yellow-800 font-medium">⚠️ <%= @pending_review_count %> professeur(s) en attente de vérification</span>
+        <%= link_to "Voir les professeurs à vérifier", admin_professors_path(status: "auto"), class: "ml-4 text-yellow-700 underline hover:text-yellow-900" %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="mb-4 flex gap-2">
+    <%= link_to "Tous", admin_professors_path, class: "px-4 py-2 rounded #{params[:status].nil? ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}" %>
+    <%= link_to "À vérifier (auto)", admin_professors_path(status: "auto"), class: "px-4 py-2 rounded #{params[:status] == 'auto' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}" %>
+  </div>
+
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Site web</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Événements</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% @professors.each do |professor| %>
+          <tr class="<%= 'bg-yellow-50' if professor.status == 'auto' %>">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= professor.id %></td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900"><%= professor.prenom %> <%= professor.nom %></div>
+              <div class="text-xs text-gray-500"><%= professor.nom_normalise %></div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <% if professor.status == "auto" %>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                  🤖 Auto
+                </span>
+              <% elsif professor.status == "reviewed" %>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  ✅ Vérifié
+                </span>
+              <% else %>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                  <%= professor.status %>
+                </span>
+              <% end %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <%= professor.email.presence || "-" %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <% if professor.site_web.present? %>
+                <%= link_to professor.site_web, professor.site_web, target: "_blank", class: "text-blue-600 hover:text-blue-900 truncate max-w-xs block" %>
+              <% else %>
+                <span class="text-gray-400">-</span>
+              <% end %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <%= professor.events.count %> événements
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+              <%= link_to "Éditer", edit_admin_professor_path(professor), class: "text-blue-600 hover:text-blue-900" %>
+              <% if professor.status == "auto" %>
+                <%= button_to "✅ Marquer vérifié", mark_reviewed_admin_professor_path(professor), method: :post, class: "inline text-green-600 hover:text-green-900" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-6">
+    <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+  </div>
+</div>

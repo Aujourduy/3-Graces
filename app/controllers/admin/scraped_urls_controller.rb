@@ -9,6 +9,9 @@ class Admin::ScrapedUrlsController < Admin::ApplicationController
       limit: 20
     )
 
+    # Count professors pending review for dashboard alert
+    @pending_professors_count = Professor.where(status: "auto").count
+
     respond_to do |format|
       format.html
       format.turbo_stream

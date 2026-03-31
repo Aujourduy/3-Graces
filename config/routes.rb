@@ -50,6 +50,11 @@ Rails.application.routes.draw do
     end
     resources :change_logs, only: [ :index, :show ]
     resources :events, only: [ :index, :show, :edit, :update ]
+    resources :professors, only: [ :index, :edit, :update ] do
+      member do
+        post :mark_reviewed
+      end
+    end
     resource :settings, only: [ :edit, :update ]
   end
 
