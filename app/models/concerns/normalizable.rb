@@ -44,6 +44,8 @@ module Normalizable
   private
 
   def set_nom_normalise
-    self.nom_normalise = self.class.normaliser_nom(nom)
+    # Si prenom existe, normaliser "prenom nom", sinon juste "nom"
+    nom_complet = prenom.present? ? "#{prenom} #{nom}" : nom
+    self.nom_normalise = self.class.normaliser_nom(nom_complet)
   end
 end

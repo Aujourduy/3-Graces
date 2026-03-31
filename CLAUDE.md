@@ -106,15 +106,6 @@ Scénarios : Homepage (Hero, navbar), liste événements, filtres (Gratuit, date
 
 **Protocole complet :** `docs/verification-scraping.md`
 
-Après chaque scraping (nouveau ScrapedUrl, modif code scraping, parsing Claude nouvelle source), vérifier :
-- Comptage événements extraits (≥ 1)
-- Timestamps (HTML, Markdown, Claude) renseignés
-- Cohérence données (dates, prix/gratuit, professor_id)
-- Correspondance site source vs DB (≥ 80%)
-- Affichage site public + admin preview OK
-
-**Commandes rapides et checklist complète dans la doc.**
-
 ---
 
 ## Ordre des Epics
