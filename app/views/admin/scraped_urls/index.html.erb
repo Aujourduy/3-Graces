@@ -3,6 +3,32 @@
   <%= link_to "Nouvelle URL", new_admin_scraped_url_path, class: "bg-terracotta text-white px-4 py-2 rounded hover:bg-terracotta-dark" %>
 </div>
 
+<%# Filtres %>
+<div class="mb-6 bg-white rounded-lg shadow p-4">
+  <%= form_with url: admin_scraped_urls_path, method: :get, class: "flex gap-4 items-end", data: { turbo_frame: "_top" } do |f| %>
+    <div class="flex-1">
+      <%= f.label :source_filter, "Filtrer sources", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_field :source_filter,
+                       value: params[:source_filter],
+                       placeholder: "marc silvestre (plusieurs mots = ET)",
+                       class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-terracotta focus:border-terracotta" %>
+    </div>
+    <div class="flex-1">
+      <%= f.label :professor_filter, "Filtrer professeurs", class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.text_field :professor_filter,
+                       value: params[:professor_filter],
+                       placeholder: "marie dupont (plusieurs mots = ET)",
+                       class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-terracotta focus:border-terracotta" %>
+    </div>
+    <%= f.hidden_field :sort, value: params[:sort] %>
+    <%= f.hidden_field :direction, value: params[:direction] %>
+    <div class="flex gap-2">
+      <%= f.submit "Filtrer", class: "bg-terracotta text-white px-4 py-2 rounded hover:bg-terracotta-dark" %>
+      <%= link_to "Réinitialiser", admin_scraped_urls_path, class: "bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300" %>
+    </div>
+  <% end %>
+</div>
+
 <% if @pending_professors_count > 0 %>
   <div class="mb-6 bg-yellow-50 border-l-4 border-yellow-400 p-4">
     <div class="flex items-center">
@@ -26,8 +52,26 @@
     <table class="min-w-full divide-y divide-gray-200">
       <thead class="bg-gray-50">
         <tr>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Source</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Professeur(s)</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+            <%= link_to admin_scraped_urls_path(sort: "nom", direction: (params[:sort] == "nom" && params[:direction] == "asc" ? "desc" : "asc"), source_filter: params[:source_filter], professor_filter: params[:professor_filter]), class: "hover:text-terracotta" do %>
+              Source
+              <% if params[:sort] == "nom" %>
+                <%= params[:direction] == "asc" ? "▲" : "▼" %>
+              <% else %>
+                <span class="text-gray-300">▼</span>
+              <% end %>
+            <% end %>
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+            <%= link_to admin_scraped_urls_path(sort: "professors", direction: (params[:sort] == "professors" && params[:direction] == "asc" ? "desc" : "asc"), source_filter: params[:source_filter], professor_filter: params[:professor_filter]), class: "hover:text-terracotta" do %>
+              Professeur(s)
+              <% if params[:sort] == "professors" %>
+                <%= params[:direction] == "asc" ? "▲" : "▼" %>
+              <% else %>
+                <span class="text-gray-300">▼</span>
+              <% end %>
+            <% end %>
+          </th>
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Mode</th>
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Statut</th>
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Dernière maj</th>
@@ -46,7 +90,7 @@
               <% end %>
             </td>
             <td class="px-6 py-4 text-sm text-gray-900">
-              <%= url.professors.map(&:nom).join(", ").presence || "—" %>
+              <%= url.professors.map { |p| "#{p.prenom} #{p.nom}" }.join(", ").presence || "—" %>
             </td>
             <td class="px-6 py-4">
               <% if url.use_browser %>

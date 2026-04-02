@@ -3,11 +3,55 @@ class Admin::ScrapedUrlsController < Admin::ApplicationController
   before_action :find_scraped_url, only: [ :show, :edit, :update, :destroy, :scrape_now, :fetch_with_httparty, :fetch_with_playwright, :generate_markdown, :preview, :raw_html ]
 
   def index
+    # Build base scope
+    scope = ScrapedUrl.all
+
+    # Filtre par mots-clés sources (logique ET)
+    if params[:source_filter].present?
+      keywords = params[:source_filter].split(/\s+/).map(&:strip).reject(&:blank?)
+      keywords.each do |keyword|
+        scope = scope.where("scraped_urls.nom ILIKE ? OR scraped_urls.url ILIKE ?", "%#{keyword}%", "%#{keyword}%")
+      end
+    end
+
+    # Filtre par mots-clés professeurs (logique ET)
+    if params[:professor_filter].present?
+      keywords = params[:professor_filter].split(/\s+/).map(&:strip).reject(&:blank?)
+      keywords.each do |keyword|
+        scope = scope.joins(:professors)
+                     .where("professors.prenom ILIKE ? OR professors.nom ILIKE ?", "%#{keyword}%", "%#{keyword}%")
+                     .distinct
+      end
+    end
+
+    # Tri (default: scraped_urls.created_at DESC)
+    sort_column = params[:sort].presence_in(%w[nom professors]) || "created_at"
+    sort_direction = params[:direction].presence_in(%w[asc desc]) || "desc"
+
+    case sort_column
+    when "professors"
+      # Sort by professor's full name (prenom + nom)
+      # Get sorted IDs using a simpler SQL query, then reload objects
+      sorted_ids = scope.joins("LEFT JOIN professor_scraped_urls psu ON psu.scraped_url_id = scraped_urls.id")
+                        .joins("LEFT JOIN professors p ON p.id = psu.professor_id")
+                        .group("scraped_urls.id")
+                        .order(Arel.sql("MIN(LOWER(COALESCE(p.prenom || ' ' || p.nom, ''))) #{sort_direction}"))
+                        .pluck(:id)
+
+      # Recreate scope with sorted IDs, preserving order
+      if sorted_ids.any?
+        scope = ScrapedUrl.where(id: sorted_ids).order(Arel.sql("ARRAY_POSITION(ARRAY[#{sorted_ids.join(',')}]::integer[], scraped_urls.id::integer)"))
+      else
+        scope = ScrapedUrl.none
+      end
+    else
+      # Specify table name to avoid ambiguity
+      scope = scope.order("scraped_urls.#{sort_column} #{sort_direction}")
+    end
+
     # Pagy syntax: @pagy, @records = pagy(scope, limit: N)
-    @pagy, @scraped_urls = pagy(
-      ScrapedUrl.includes(:professors).order(created_at: :desc),
-      limit: 20
-    )
+    # Must use includes to avoid N+1 after query
+    @pagy, @scraped_urls = pagy(scope.includes(:professors), limit: 20)
 
     # Count professors pending review for dashboard alert
     @pending_professors_count = Professor.where(status: "auto").count
