@@ -1,6 +1,6 @@
 # État du Projet - Stop & Dance
 
-**Dernière mise à jour :** 2026-04-06
+**Dernière mise à jour :** 2026-04-07
 **Branch :** main + exploration-site-prof (feature branch)
 **Dernier commit main :** c34f15e
 **Statut :** ✅ **PROJET COMPLET - Tous les epics terminés** + Feature branch "exploration site prof" en cours
@@ -529,18 +529,43 @@ bin/rails scraping:test[1]      # Test parsing sans sauvegarder
 
 **Spec complète :** 35 tâches en 8 phases, 20 critères d'acceptation Given/When/Then
 
+### Implémentation Crawler (2026-04-06 → 2026-04-07) ✅
+
+**Commits branche `exploration-site-prof` :**
+- `db9c0e8` feat: Crawler site prof avec détection LLM via OpenRouter (implémentation complète)
+- `50e3e2b` fix: Retry 3x avec backoff sur rate limit 429 OpenRouter
+- `9d198fa` fix: Crawler utilise HTTParty (rapide) au lieu de Playwright
+- `0d143f6` feat: Fallback Playwright automatique pour pages JS-only
+
+**Tests réels :**
+- Silvestre (Wix) : 12 pages crawlées, 6 OUI, ~30s ✅
+- Wilberforce (Wix) : 25 pages crawlées, 14 OUI, ~4 min ✅
+
+**Problèmes résolus :**
+- Rate limit OpenRouter sur modèles gratuits → retry 3x avec backoff 15/30/45s
+- Playwright trop lent/crash sur crawl multi-pages Wix → HTTParty par défaut pour crawler
+- Pages JS-only (contenu vide côté serveur) → détection automatique (texte visible < 500 chars OU `<noscript>` JavaScript) + fallback Playwright
+
+**Documentation mise à jour :**
+- `docs/architecture-scraping.md` v2.0 (section crawler + diagramme classes)
+- `docs/guide-admin.md` v2.0 (section 7 crawler + routes)
+- `docs/etat-projet.md`
+
 ---
 
 ## ⚠️ TODO Prochaine Session
 
-**Priorité 1 — Feature "Crawler site prof" :**
-1. Audit tech-spec par claude.ai (Gist partagé)
-2. Étape 4 BMAD : review + finalisation spec
-3. Obtenir clé API OpenRouter (gratuit)
-4. Implémenter les 35 tâches sur branche `exploration-site-prof`
+**Priorité 1 — Merger branche crawler :**
+- Review code final sur `exploration-site-prof`
+- Merger dans main si OK
+- Tester en production
 
-**Priorité 2 — Maintenance :**
-- Tester scraping complet avec auto-création professeurs
+**Priorité 2 — Améliorations crawler :**
+- Nettoyer les faux positifs (articles de blog classés "oui")
+- Tester avec d'autres sites de profs
+- Ajouter checkbox `auto_recrawl` dans le formulaire admin ScrapedUrl
+
+**Priorité 3 — Maintenance :**
 - Optionnel : Upgrade Ruby 3.4
 
 ---
