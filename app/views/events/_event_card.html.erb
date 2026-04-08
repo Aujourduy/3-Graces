@@ -5,8 +5,9 @@
 
   <%# Avatar %>
   <figure class="flex-shrink-0 p-2 sm:p-4 pb-0 lg:pb-4">
-    <% if event.photo_url.present? %>
-      <%= image_tag event.photo_url,
+    <% photo = event.photo_url.presence || event.professor&.avatar_url %>
+    <% if photo.present? %>
+      <%= image_tag photo,
                     alt: event.titre,
                     class: "w-24 h-24 sm:w-32 sm:h-32 object-cover rounded",
                     loading: "lazy" %>
