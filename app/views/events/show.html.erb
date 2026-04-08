@@ -43,7 +43,7 @@
 
         <%# Info block %>
         <div class="space-y-3 mb-6">
-          <div><span class="font-medium">Animé par :</span> <%= @event.professor.nom %></div>
+          <div><span class="font-medium">Avec :</span> <%= [@event.professor.prenom, @event.professor.nom].compact.join(" ") %></div>
           <div><span class="font-medium">Début :</span> <%= l(@event.date_debut, format: :long) %></div>
           <div><span class="font-medium">Fin :</span> <%= l(@event.date_fin, format: :long) %></div>
           <div><span class="font-medium">Durée :</span> <%= @event.duree_minutes %> minutes</div>
@@ -62,27 +62,23 @@
             <% end %>
           </div>
 
-          <% if @event.scraped_url.present? %>
-            <div>
-              <span class="font-medium">Source :</span>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <% if @event.scraped_url.present? %>
               <%# brakeman:disable LinkToHref %>
-              <%= link_to @event.scraped_url.url.truncate(50),
+              <%= link_to "Voir la page source →",
                           @event.scraped_url.url,
                           target: "_blank",
                           rel: "noopener noreferrer",
-                          class: "link link-primary text-sm" %>
-            </div>
-          <% end %>
-
-          <% if @event.professor.site_web.present? %>
-            <div>
-              <%= link_to "Voir le site du prof →",
+                          class: "btn btn-primary btn-sm" %>
+            <% end %>
+            <% if @event.professor.site_web.present? && @event.professor.site_web != @event.scraped_url&.url %>
+              <%= link_to "Site de #{@event.professor.prenom || @event.professor.nom} →",
                           @event.professor.site_web,
                           target: "_blank",
                           rel: "noopener noreferrer",
-                          class: "btn btn-primary btn-sm" %>
-            </div>
-          <% end %>
+                          class: "btn btn-outline btn-primary btn-sm" %>
+            <% end %>
+          </div>
         </div>
 
         <%# Description %>
