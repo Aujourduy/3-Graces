@@ -8,9 +8,18 @@
   </div>
 <% end %>
 
-<div class="mb-4 flex gap-2">
-  <%= link_to "Tous", admin_professors_path, class: "btn btn-sm #{params[:status].nil? ? 'btn-primary' : 'btn-ghost'}" %>
+<div class="mb-4 flex flex-wrap gap-2 items-end">
+  <%= link_to "Tous", admin_professors_path, class: "btn btn-sm #{params[:status].nil? && params[:q].blank? ? 'btn-primary' : 'btn-ghost'}" %>
   <%= link_to "À vérifier (auto)", admin_professors_path(status: "auto"), class: "btn btn-sm #{params[:status] == 'auto' ? 'btn-primary' : 'btn-ghost'}" %>
+
+  <%= form_with url: admin_professors_path, method: :get, class: "flex gap-2 items-end ml-auto" do |f| %>
+    <%= f.hidden_field :status, value: params[:status] %>
+    <%= f.text_field :q, value: params[:q], placeholder: "Rechercher un prof...", class: "input input-bordered input-sm w-48" %>
+    <%= f.submit "Chercher", class: "btn btn-primary btn-sm" %>
+    <% if params[:q].present? %>
+      <%= link_to "×", admin_professors_path(status: params[:status]), class: "btn btn-ghost btn-sm" %>
+    <% end %>
+  <% end %>
 </div>
 
 <div class="overflow-x-auto">
@@ -18,6 +27,7 @@
     <thead>
       <tr>
         <th>ID</th>
+        <th>Prénom</th>
         <th>Nom</th>
         <th>Status</th>
         <th>Email</th>
@@ -41,11 +51,11 @@
                   </div>
                 </div>
               <% end %>
-              <div>
-                <div class="font-medium"><%= professor.prenom %> <%= professor.nom %></div>
-                <div class="text-xs opacity-50"><%= professor.nom_normalise %></div>
-              </div>
+              <span><%= professor.prenom %></span>
             </div>
+          </td>
+          <td>
+            <div class="font-medium"><%= professor.nom %></div>
           </td>
           <td>
             <% if professor.status == "auto" %>

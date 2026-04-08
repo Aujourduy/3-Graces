@@ -10,6 +10,13 @@ class Admin::ProfessorsController < Admin::ApplicationController
       Professor.order(created_at: :desc)
     end
 
+    if params[:q].present?
+      params[:q].strip.split(/\s+/).each do |word|
+        pattern = "%#{word}%"
+        scope = scope.where("professors.prenom ILIKE :p OR professors.nom ILIKE :p OR professors.email ILIKE :p", p: pattern)
+      end
+    end
+
     @professors = scope.all
 
     # Count professors pending review for alert
