@@ -15,6 +15,7 @@ class Event < ApplicationRecord
 
   # Callbacks
   before_save :calculate_duree_minutes
+  before_save :normalize_titre
   before_validation :generate_slug
 
   # Scopes
@@ -26,6 +27,11 @@ class Event < ApplicationRecord
   end
 
   private
+
+  def normalize_titre
+    return if titre.blank?
+    self.titre = titre.gsub(/\b[A-ZÀ-Ü]{2,}\b/) { |word| word.capitalize } if titre == titre.upcase
+  end
 
   def calculate_duree_minutes
     return unless date_debut.present? && date_fin.present?
