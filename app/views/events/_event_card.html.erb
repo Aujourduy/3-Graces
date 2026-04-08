@@ -1,6 +1,6 @@
 <%# locals: event %>
 <%= link_to evenement_path(event.slug),
-            class: "card card-side bg-base-100 mb-0 rounded-none lg:rounded-box overflow-hidden",
+            class: "card card-side bg-base-100 mb-0 rounded-none lg:rounded-box overflow-hidden items-start",
             data: { turbo_frame: "event_modal", debug_id: "event-card-#{event.id}" } do %>
 
   <%# Avatar %>
