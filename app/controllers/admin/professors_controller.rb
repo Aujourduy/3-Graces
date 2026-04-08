@@ -10,7 +10,7 @@ class Admin::ProfessorsController < Admin::ApplicationController
       Professor.order(created_at: :desc)
     end
 
-    @pagy, @professors = pagy(scope, limit: 20)
+    @professors = scope.all
 
     # Count professors pending review for alert
     @pending_review_count = Professor.where(status: "auto").count
