@@ -1,0 +1,56 @@
+<% if params[:ready_page].present? %>
+  <%= turbo_stream.append "admin-jobs-ready-tbody" do %>
+    <% @ready.each do |job| %>
+      <tr class="hover">
+        <td><%= job.id %></td>
+        <td class="font-medium"><%= job.class_name %></td>
+        <td><span class="badge badge-info badge-sm"><%= job.queue_name %></span></td>
+        <td class="text-sm opacity-60"><%= job.created_at.strftime("%d/%m %H:%M") %></td>
+        <td class="text-xs opacity-50 max-w-xs truncate"><%= job.arguments.to_json.truncate(80) %></td>
+      </tr>
+    <% end %>
+  <% end %>
+
+  <%= turbo_stream.replace "admin-jobs-ready-page-#{params[:ready_page]}" do %>
+    <% if @pagy_ready.next %>
+      <%= turbo_frame_tag "admin-jobs-ready-page-#{@pagy_ready.next}",
+                          src: admin_jobs_path(ready_page: @pagy_ready.next, format: :turbo_stream),
+                          loading: :lazy do %>
+        <div class="text-center py-8">
+          <span class="loading loading-spinner loading-md text-primary"></span>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% if params[:failed_page].present? %>
+  <%= turbo_stream.append "admin-jobs-failed-tbody" do %>
+    <% @failed.each do |execution| %>
+      <tr class="hover">
+        <td><%= execution.job_id %></td>
+        <td class="font-medium"><%= execution.job.class_name %></td>
+        <td class="text-sm text-error max-w-md">
+          <div class="truncate"><%= execution.error.to_s.truncate(100) rescue "N/A" %></div>
+        </td>
+        <td class="text-sm opacity-60"><%= execution.created_at.strftime("%d/%m %H:%M") %></td>
+        <td class="space-x-1">
+          <%= button_to "Relancer", retry_failed_admin_job_path(execution.id), method: :post, class: "btn btn-success btn-xs" %>
+          <%= button_to "Supprimer", discard_failed_admin_job_path(execution.id), method: :post, class: "btn btn-ghost btn-xs", data: { confirm: "Supprimer ce job ?" } %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+
+  <%= turbo_stream.replace "admin-jobs-failed-page-#{params[:failed_page]}" do %>
+    <% if @pagy_failed.next %>
+      <%= turbo_frame_tag "admin-jobs-failed-page-#{@pagy_failed.next}",
+                          src: admin_jobs_path(failed_page: @pagy_failed.next, format: :turbo_stream),
+                          loading: :lazy do %>
+        <div class="text-center py-8">
+          <span class="loading loading-spinner loading-md text-primary"></span>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,22 +1,30 @@
 class Admin::JobsController < Admin::ApplicationController
-  def index
-    @ready = SolidQueue::Job.where(finished_at: nil)
-                            .left_joins(:failed_execution)
-                            .where(solid_queue_failed_executions: { id: nil })
-                            .order(created_at: :desc).limit(50)
+  include Pagy::Method
 
-    @failed = SolidQueue::FailedExecution.includes(:job).order(created_at: :desc).limit(50)
+  def index
+    ready_scope = SolidQueue::Job.where(finished_at: nil)
+                                 .left_joins(:failed_execution)
+                                 .where(solid_queue_failed_executions: { id: nil })
+                                 .order(created_at: :desc)
+
+    failed_scope = SolidQueue::FailedExecution.includes(:job).order(created_at: :desc)
+
+    @pagy_ready, @ready = pagy(ready_scope, limit: 20, page_param: :ready_page)
+    @pagy_failed, @failed = pagy(failed_scope, limit: 20, page_param: :failed_page)
 
     @recurring = SolidQueue::RecurringTask.all rescue []
 
-    @completed_today = SolidQueue::Job.where("finished_at >= ?", Date.current.beginning_of_day).count
-
     @stats = {
-      ready: @ready.count,
-      failed: @failed.count,
-      completed_today: @completed_today,
+      ready: ready_scope.count,
+      failed: failed_scope.count,
+      completed_today: SolidQueue::Job.where("finished_at >= ?", Date.current.beginning_of_day).count,
       total: SolidQueue::Job.count
     }
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def retry_failed
