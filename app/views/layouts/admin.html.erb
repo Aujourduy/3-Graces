@@ -21,6 +21,7 @@
         <%= link_to "Professeurs", admin_professors_path, class: "btn btn-ghost btn-sm" %>
         <%= link_to "Événements", admin_events_path, class: "btn btn-ghost btn-sm" %>
         <%= link_to "Changements", admin_change_logs_path, class: "btn btn-ghost btn-sm" %>
+        <%= link_to "Jobs", admin_jobs_path, class: "btn btn-ghost btn-sm" %>
         <% notif_count = AdminNotification.non_lu.count %>
         <%= link_to admin_notifications_path, class: "btn btn-ghost btn-sm" do %>
           Notifications

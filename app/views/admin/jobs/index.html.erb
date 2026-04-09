@@ -1,0 +1,119 @@
+<h1 class="text-3xl font-bold mb-6">Jobs Solid Queue</h1>
+
+<%# Stats %>
+<div class="stats stats-vertical sm:stats-horizontal shadow w-full mb-6">
+  <div class="stat">
+    <div class="stat-title">En attente / en cours</div>
+    <div class="stat-value text-primary"><%= @stats[:ready] %></div>
+  </div>
+  <div class="stat">
+    <div class="stat-title">Échoués</div>
+    <div class="stat-value text-error"><%= @stats[:failed] %></div>
+  </div>
+  <div class="stat">
+    <div class="stat-title">Terminés aujourd'hui</div>
+    <div class="stat-value text-success"><%= @stats[:completed_today] %></div>
+  </div>
+  <div class="stat">
+    <div class="stat-title">Total en base</div>
+    <div class="stat-value"><%= @stats[:total] %></div>
+  </div>
+</div>
+
+<%# Jobs programmés (recurring) %>
+<% if @recurring.any? %>
+  <h2 class="text-xl font-bold mb-4">Jobs programmés (recurring)</h2>
+  <div class="overflow-x-auto mb-8">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Classe</th>
+          <th>Schedule</th>
+          <th>Queue</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @recurring.each do |task| %>
+          <tr class="hover">
+            <td class="font-medium"><%= task.key %></td>
+            <td><%= task.class_name %></td>
+            <td class="text-sm opacity-60"><%= task.schedule %></td>
+            <td><span class="badge badge-ghost badge-sm"><%= task.queue_name %></span></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+
+<%# Jobs en attente / en cours %>
+<h2 class="text-xl font-bold mb-4">Jobs en attente / en cours (<%= @ready.size %>)</h2>
+<% if @ready.any? %>
+  <div class="overflow-x-auto mb-8">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Classe</th>
+          <th>Queue</th>
+          <th>Créé</th>
+          <th>Arguments</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @ready.each do |job| %>
+          <tr class="hover">
+            <td><%= job.id %></td>
+            <td class="font-medium"><%= job.class_name %></td>
+            <td><span class="badge badge-info badge-sm"><%= job.queue_name %></span></td>
+            <td class="text-sm opacity-60"><%= job.created_at.strftime("%d/%m %H:%M") %></td>
+            <td class="text-xs opacity-50 max-w-xs truncate"><%= job.arguments.to_json.truncate(80) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="card bg-base-100 shadow-sm mb-8">
+    <div class="card-body text-center opacity-50">Aucun job en attente</div>
+  </div>
+<% end %>
+
+<%# Jobs échoués %>
+<h2 class="text-xl font-bold mb-4">Jobs échoués (<%= @failed.size %>)</h2>
+<% if @failed.any? %>
+  <div class="overflow-x-auto">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Classe</th>
+          <th>Erreur</th>
+          <th>Échoué à</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @failed.each do |execution| %>
+          <tr class="hover">
+            <td><%= execution.job_id %></td>
+            <td class="font-medium"><%= execution.job.class_name %></td>
+            <td class="text-sm text-error max-w-md">
+              <div class="truncate"><%= execution.error.to_s.truncate(100) rescue "N/A" %></div>
+            </td>
+            <td class="text-sm opacity-60"><%= execution.created_at.strftime("%d/%m %H:%M") %></td>
+            <td class="space-x-1">
+              <%= button_to "Relancer", retry_failed_admin_job_path(execution.id), method: :post, class: "btn btn-success btn-xs" %>
+              <%= button_to "Supprimer", discard_failed_admin_job_path(execution.id), method: :post, class: "btn btn-ghost btn-xs", data: { confirm: "Supprimer ce job ?" } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="card bg-base-100 shadow-sm">
+    <div class="card-body text-center opacity-50">Aucun job échoué</div>
+  </div>
+<% end %>

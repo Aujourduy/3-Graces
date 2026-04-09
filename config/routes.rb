@@ -55,6 +55,12 @@ Rails.application.routes.draw do
         post :bulk_update
       end
     end
+    resources :jobs, only: [ :index ] do
+      member do
+        post :retry_failed
+        post :discard_failed
+      end
+    end
     resources :change_logs, only: [ :index, :show ]
     resources :events, only: [ :index, :show, :edit, :update ]
     resources :professors, only: [ :index, :edit, :update ] do
