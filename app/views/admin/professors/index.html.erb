@@ -30,6 +30,7 @@
   <% end %>
 </div>
 
+<%= turbo_frame_tag "admin-professors-list", data: { controller: "infinite-scroll" } do %>
 <div class="overflow-x-auto">
   <table class="table">
     <thead>
@@ -45,7 +46,7 @@
         <th>Actions</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="admin-professors-tbody">
       <% @professors.each do |professor| %>
         <tr class="hover <%= 'bg-warning/10' if professor.status == 'auto' %>">
           <td><%= professor.id %></td>
@@ -91,3 +92,14 @@
     </tbody>
   </table>
 </div>
+
+<% if @pagy.next %>
+  <%= turbo_frame_tag "admin-professors-page-#{@pagy.next}",
+                      src: admin_professors_path(page: @pagy.next, status: params[:status], photo: params[:photo], q: params[:q], format: :turbo_stream),
+                      loading: :lazy do %>
+    <div class="text-center py-8">
+      <span class="loading loading-spinner loading-md text-primary"></span>
+    </div>
+  <% end %>
+<% end %>
+<% end %>

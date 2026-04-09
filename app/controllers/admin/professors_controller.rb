@@ -21,7 +21,8 @@ class Admin::ProfessorsController < Admin::ApplicationController
       end
     end
 
-    @professors = scope.all
+    @pagy, @professors = pagy(scope, limit: 30)
+
 
     # Counts for alerts
     @pending_review_count = Professor.where(status: "auto").count
