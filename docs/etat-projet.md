@@ -1,9 +1,9 @@
 # État du Projet - Stop & Dance
 
-**Dernière mise à jour :** 2026-04-07
-**Branch :** main + exploration-site-prof (feature branch)
-**Dernier commit main :** c34f15e
-**Statut :** ✅ **PROJET COMPLET - Tous les epics terminés** + Feature branch "exploration site prof" en cours
+**Dernière mise à jour :** 2026-04-09
+**Branch :** main
+**Dernier commit main :** 0e151ed
+**Statut :** ✅ **PROJET COMPLET** + DaisyUI + Crawler site + Récurrences + Séparation date/heure
 
 ---
 
@@ -489,7 +489,7 @@ bin/rails scraping:test[1]      # Test parsing sans sauvegarder
 
 ---
 
-## 🚀 Dernière Session (2026-04-05 → 2026-04-06)
+## 🚀 Session 2026-04-05 → 2026-04-09 (Remote Control depuis mobile)
 
 ### Corrections Mobile (main) ✅
 
@@ -546,27 +546,57 @@ bin/rails scraping:test[1]      # Test parsing sans sauvegarder
 - Playwright trop lent/crash sur crawl multi-pages Wix → HTTParty par défaut pour crawler
 - Pages JS-only (contenu vide côté serveur) → détection automatique (texte visible < 500 chars OU `<noscript>` JavaScript) + fallback Playwright
 
-**Documentation mise à jour :**
-- `docs/architecture-scraping.md` v2.0 (section crawler + diagramme classes)
-- `docs/guide-admin.md` v2.0 (section 7 crawler + routes)
-- `docs/etat-projet.md`
+### DaisyUI 5 (mergé dans main) ✅
+
+- Thème custom `stopanddance` (terracotta/beige/noir)
+- Toutes pages publiques + admin migrées vers composants DaisyUI
+- Guide : `docs/guide-daisyui.md`
+
+### Récurrence events ✅
+
+- RecurrenceExpander : weekly → dates individuelles (aujourd'hui → 31 août)
+- Dates explicites : Claude retourne N events séparés
+- Exclusions : dates isolées + périodes
+- Testé : Marc (38 events), Peter (79 events)
+
+### Séparation date/heure ✅
+
+- `date_debut_date` (date) + `heure_debut` (time nullable)
+- Horaire non renseigné = nil (pas d'invention)
+- Modal : "Horaires à confirmer" si heure inconnue
+- Backward compat : setter `date_debut=` auto-remplit les nouveaux champs
+
+### Autres améliorations ✅
+
+- Clean slate à chaque re-parsing (supprime events avant recréation)
+- Recherche agenda : inclut prénom du prof
+- Normalisation titres majuscules + acronymes préservés (configurable admin)
+- Synonymes danse : vague=atelier, intensif=stage
+- Avatars Cloudinary importés (17 profs)
+- Avatars dans admin professors index
+- Admin profs : colonnes Photo/Prénom/Nom, recherche AND, tous affichés
+- Modal event : prénom+nom, boutons source/site distincts, URL référence
+- Infinite scroll fixé (replace au lieu d'append)
+- Durée affichée en XXmin ou XXhXXmin
 
 ---
 
 ## ⚠️ TODO Prochaine Session
 
-**Priorité 1 — Merger branche crawler :**
-- Review code final sur `exploration-site-prof`
-- Merger dans main si OK
-- Tester en production
+**Priorité 1 — Page admin notifications :**
+- Inbox admin avec messages/erreurs/alertes du système
+- Status par notification : non lu / lu / validé / archivé
+- Alerte quand récurrence non supportée détectée (ex: monthly)
 
-**Priorité 2 — Améliorations crawler :**
-- Nettoyer les faux positifs (articles de blog classés "oui")
-- Tester avec d'autres sites de profs
-- Ajouter checkbox `auto_recrawl` dans le formulaire admin ScrapedUrl
+**Priorité 2 — Améliorations :**
+- Support récurrence monthly dans RecurrenceExpander
+- Checkbox `auto_recrawl` dans formulaire admin ScrapedUrl
+- Faux positifs crawler (articles blog classés "oui")
+- Co-animation (table join event_professors pour multi-profs)
 
 **Priorité 3 — Maintenance :**
 - Optionnel : Upgrade Ruby 3.4
+- Corriger photos Cloudinary (mauvais cloud name sur certains profs)
 
 ---
 

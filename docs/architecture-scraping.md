@@ -255,13 +255,18 @@ CONTENU MARKDOWN:
 **Retry:** 3 tentatives
 **Logique:**
 
-**Pour chaque event du JSON Claude:**
-1. Skip si dates manquantes
-2. Parse dates ISO 8601
-3. Calcule type_event:
-   ```ruby
-   duration_hours = (date_fin - date_debut) / 3600.0
-   type_event = duration_hours < 5 ? "atelier" : "stage"
+1. Parse via Claude CLI
+2. Expand récurrences (RecurrenceExpander)
+3. **Clean slate** : supprime tous les events existants de cette ScrapedUrl
+4. Recrée tous les events
+
+**Pour chaque event (après expansion) :**
+1. Skip si date manquante
+2. Parse datetime → extrait date (date_debut_date) + heure (heure_debut, nullable)
+3. Si heure = minuit (00:00) → heure_debut = nil (horaire non renseigné sur le site)
+4. Calcule type_event :
+   - Si horaire connu : durée < 5h → atelier, >= 5h → stage
+   - Si horaire inconnu : 1 jour → atelier, multi-jours → stage
    ```
 4. Find_or_initialize_by:
    - `scraped_url_id`
@@ -287,6 +292,12 @@ erreurs_consecutives       # Integer - compteur erreurs
 ```ruby
 titre
 description
+date_debut_date            # Date seule (ex: 2026-04-12)
+date_fin_date              # Date seule (>= date_debut_date)
+heure_debut                # Time nullable (nil = horaire non renseigné)
+heure_fin                  # Time nullable
+date_debut                 # DateTime legacy (sync auto via callback)
+date_fin                   # DateTime legacy (sync auto via callback)
 date_debut, date_fin
 lieu, adresse_complete
 prix_normal, prix_reduit
@@ -297,6 +308,40 @@ tags                       # Array de strings
 professor_id               # belongs_to
 scraped_url_id             # belongs_to
 ```
+
+## Règles métier du scraping
+
+### Re-parsing (clean slate)
+À chaque re-scraping d'une URL, **tous les events existants sont supprimés** puis recréés. Pas d'accumulation, pas de doublons.
+
+### Dates et horaires
+- `date_debut_date` / `date_fin_date` : dates obligatoires
+- `heure_debut` / `heure_fin` : nullable. Si le site ne mentionne pas l'horaire, on ne l'invente pas
+- Le prompt Claude utilise minuit (00:00) pour signifier "horaire non renseigné"
+- Affichage : "—" dans la card, "Horaires à confirmer" dans la modal
+
+### Récurrences
+- **Dates explicites** (ex: "12 avril, 26 avril") : Claude retourne N events séparés
+- **Weekly** (ex: "tous les vendredis") : Claude retourne 1 template avec `recurrence.type=weekly`, Rails génère les dates (aujourd'hui → 31 août)
+- **Exclusions** : `excluded_dates` (dates isolées) + `excluded_ranges` (périodes vacances)
+- Seul `weekly` est supporté. Autres types → passthrough (1 event)
+
+### Normalisation des titres
+- Mots en MAJUSCULES (2+ lettres) → capitalize automatique
+- Acronymes préservés : configurables dans Admin > Paramètres (défaut: CI, BMC, DJ, MC, NYC, USA)
+
+### Synonymes type d'événement
+Configurés dans le prompt Claude :
+- "Vague", "Waves", "Jam" → atelier
+- "Intensif", "Retraite", "Résidentiel" → stage
+
+### Avatars événements
+Priorité d'affichage : `event.photo_url` > `professor.avatar_url` > placeholder initiale
+
+### Héritage sur auto-crawl
+Les ScrapedUrl auto-créées par le crawler héritent du parent :
+- Flag `use_browser`
+- Associations `ProfessorScrapedUrl`
 
 ## Optimisations
 
