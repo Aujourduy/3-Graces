@@ -104,6 +104,11 @@ class ClaudeCliIntegration
 
       4. "2 fois par mois" avec dates listées → cas 1 (dates explicites, PAS de recurrence).
 
+      RÈGLE HORAIRES :
+      - Si l'horaire exact est mentionné sur le site, l'utiliser.
+      - Si l'horaire N'EST PAS mentionné : utiliser 10h00-17h00 pour un stage/journée, 19h30-21h30 pour un atelier/soirée.
+      - Si l'horaire est estimé (non mentionné sur le site), ajouter "(horaires à confirmer)" à la fin de la description.
+
       Retourne un JSON avec cette structure :
       {
         "events": [
