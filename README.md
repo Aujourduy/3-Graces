@@ -20,6 +20,21 @@ cp .env.example .env
 
 Edit `.env` with your actual credentials (never commit this file).
 
+**Admin Access:**
+
+L'interface admin (`/admin`) est restreinte au réseau **Tailscale** (IPs `100.64.0.0/10`) + HTTP Basic Auth.
+
+Si vous déployez sur un autre serveur :
+1. Installer [Tailscale](https://tailscale.com/) sur le serveur et votre machine
+2. Ou modifier la restriction IP dans `app/controllers/admin/application_controller.rb` :
+   - Changer `TAILSCALE_RANGE` pour votre réseau privé
+   - Ou commenter `before_action :restrict_to_tailscale` pour désactiver la restriction IP (HTTP Basic Auth reste actif)
+
+```ruby
+# app/controllers/admin/application_controller.rb
+TAILSCALE_RANGE = IPAddr.new("100.64.0.0/10")  # ← modifier selon votre réseau
+```
+
 ## Setup
 
 ```bash
