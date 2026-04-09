@@ -2,8 +2,8 @@
 
 **Dernière mise à jour :** 2026-04-09
 **Branch :** main
-**Dernier commit main :** 0e151ed
-**Statut :** ✅ **PROJET COMPLET** + DaisyUI + Crawler site + Récurrences + Séparation date/heure
+**Dernier commit main :** 5a62089
+**Statut :** ✅ **PROJET COMPLET** + DaisyUI + Crawler site + Récurrences + Date/heure séparées + Notifications admin
 
 ---
 
@@ -583,20 +583,18 @@ bin/rails scraping:test[1]      # Test parsing sans sauvegarder
 
 ## ⚠️ TODO Prochaine Session
 
-**Priorité 1 — Page admin notifications :**
-- Inbox admin avec messages/erreurs/alertes du système
-- Status par notification : non lu / lu / validé / archivé
-- Alerte quand récurrence non supportée détectée (ex: monthly)
-
-**Priorité 2 — Améliorations :**
+**Priorité 1 — Améliorations scraping :**
 - Support récurrence monthly dans RecurrenceExpander
+- Lancer scraping complet sur toutes les URLs actives
 - Checkbox `auto_recrawl` dans formulaire admin ScrapedUrl
 - Faux positifs crawler (articles blog classés "oui")
-- Co-animation (table join event_professors pour multi-profs)
+
+**Priorité 2 — Architecture :**
+- Co-animation (table join event_professors pour multi-profs par event)
+- Corriger photos Cloudinary (mauvais cloud name sur certains profs)
 
 **Priorité 3 — Maintenance :**
 - Optionnel : Upgrade Ruby 3.4
-- Corriger photos Cloudinary (mauvais cloud name sur certains profs)
 
 ---
 
