@@ -2,8 +2,8 @@
 
 **Dernière mise à jour :** 2026-04-09
 **Branch :** main
-**Dernier commit main :** 5a62089
-**Statut :** ✅ **PROJET COMPLET** + DaisyUI + Crawler site + Récurrences + Date/heure séparées + Notifications admin
+**Dernier commit main :** f318d25
+**Statut :** ✅ **PROJET COMPLET** + DaisyUI + Crawler + Récurrences + Date/heure + Notifications + Photos locales + Jobs admin
 
 ---
 
@@ -583,15 +583,38 @@ bin/rails scraping:test[1]      # Test parsing sans sauvegarder
 
 ## ⚠️ TODO Prochaine Session
 
+### Session 2026-04-09 (suite) ✅
+
+**Photos locales :**
+- Migration Cloudinary → `public/photos/professors/` (une seule taille 300px)
+- ProfessorPhotoService : upload + crop auto MiniMagick
+- Admin edit : champ file upload avec preview photo actuelle
+- Auto-download photos depuis sites profs (33 profs avec photo sur 65)
+- Prompt Claude : `professor_photo_url` pour auto-download au parsing
+- Alerte + filtre "Sans photo" dans admin professors
+
+**Admin Jobs :**
+- Page `/admin/jobs` : stats, jobs en attente/cours, échoués (relancer/supprimer), recurring
+- Lien Jobs dans navbar admin
+
+**Scraping complet lancé :**
+- 144 events futurs sur l'agenda
+- 20 URLs réelles scrapées
+- Quelques erreurs (null byte PDF, retry) — non bloquantes
+
+---
+
+## ⚠️ TODO Prochaine Session
+
 **Priorité 1 — Améliorations scraping :**
 - Support récurrence monthly dans RecurrenceExpander
-- Lancer scraping complet sur toutes les URLs actives
+- Nettoyer faux positifs blog Wilberforce (#86 : 24 events blog)
 - Checkbox `auto_recrawl` dans formulaire admin ScrapedUrl
-- Faux positifs crawler (articles blog classés "oui")
+- Scraper les 5 profs restants sans photo (Vernier fait, restent Desboist, Omnès, Jones, Chantereau+Sartelet)
 
 **Priorité 2 — Architecture :**
 - Co-animation (table join event_professors pour multi-profs par event)
-- Corriger photos Cloudinary (mauvais cloud name sur certains profs)
+- Page admin notifications : intégrer plus d'alertes auto (erreurs scraping, nouveaux profs)
 
 **Priorité 3 — Maintenance :**
 - Optionnel : Upgrade Ruby 3.4
