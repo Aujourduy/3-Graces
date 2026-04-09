@@ -76,6 +76,19 @@ class EventUpdateJob < ApplicationJob
     # Find or create professor
     professor = find_or_create_professor(scraped_url, event_data[:professor_nom])
 
+    # Auto-download professor photo if available and prof has none
+    if professor.avatar_url.blank? && event_data[:professor_photo_url].present?
+      begin
+        result = ProfessorPhotoService.download_from_url(professor, event_data[:professor_photo_url])
+        if result.is_a?(String)
+          professor.update!(avatar_url: result)
+          SCRAPING_LOGGER.info({ event: "professor_photo_downloaded", professor_id: professor.id, url: event_data[:professor_photo_url] }.to_json)
+        end
+      rescue => e
+        SCRAPING_LOGGER.error({ event: "professor_photo_failed", professor_id: professor.id, error: e.message }.to_json)
+      end
+    end
+
     # Find or create event — use date_debut_date instead of datetime for dedup
     event = Event.find_or_initialize_by(
       scraped_url: scraped_url,

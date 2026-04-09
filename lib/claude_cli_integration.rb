@@ -120,6 +120,7 @@ class ClaudeCliIntegration
           {
             "titre": "Titre de l'événement",
             "professor_nom": "Prénom Nom du professeur animant cet événement (extrait du HTML si disponible, sinon laisser vide)",
+            "professor_photo_url": "URL complète de la photo/avatar du professeur si visible sur la page (portrait, headshot). null si pas trouvée.",
             "description": "Description complète",
             "tags": ["Contact Improvisation", "Danse des 5 Rythmes"],
             "date_debut": "2026-03-25T19:30:00+01:00",
