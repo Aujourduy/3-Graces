@@ -22,7 +22,10 @@ class EventUpdateJob < ApplicationJob
     # Expand recurring events into individual dates
     expanded_events = result[:events].flat_map { |e| RecurrenceExpander.expand(e) }
 
-    # Create/update events
+    # Clean slate: delete all existing events for this URL before recreating
+    old_count = Event.where(scraped_url: scraped_url).delete_all
+
+    # Create events
     expanded_events.each do |event_data|
       create_or_update_event(scraped_url, event_data)
     end
@@ -30,6 +33,7 @@ class EventUpdateJob < ApplicationJob
     SCRAPING_LOGGER.info({
       event: "events_updated",
       scraped_url_id: scraped_url_id,
+      events_deleted: old_count,
       events_from_claude: result[:events].size,
       events_after_expansion: expanded_events.size
     }.to_json)
