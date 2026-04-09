@@ -19,6 +19,12 @@ class RecurrenceExpander
     when "weekly"
       expand_weekly(event_data, recurrence)
     else
+      AdminNotification.notify!(
+        title: "Récurrence non supportée : #{recurrence['type']}",
+        message: "Event '#{event_data[:titre] || event_data['titre']}' a une récurrence de type '#{recurrence['type']}' non gérée. Seul 'weekly' est supporté.",
+        category: "recurrence",
+        source: "RecurrenceExpander"
+      )
       [event_data]
     end
   end

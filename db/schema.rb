@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_09_032103) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_09_040351) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "admin_notifications", force: :cascade do |t|
+    t.string "category", default: "info", null: false
+    t.datetime "created_at", null: false
+    t.text "message"
+    t.jsonb "metadata", default: {}
+    t.string "source"
+    t.string "status", default: "non_lu", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category"], name: "index_admin_notifications_on_category"
+    t.index ["status"], name: "index_admin_notifications_on_status"
+  end
 
   create_table "change_logs", force: :cascade do |t|
     t.jsonb "changements_detectes"

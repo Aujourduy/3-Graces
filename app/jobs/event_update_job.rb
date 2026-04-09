@@ -16,6 +16,12 @@ class EventUpdateJob < ApplicationJob
         scraped_url_id: scraped_url_id,
         error: result[:error]
       }.to_json)
+      AdminNotification.notify!(
+        title: "Erreur parsing Claude",
+        message: "ScrapedUrl ##{scraped_url_id} (#{scraped_url.nom}): #{result[:error]}",
+        category: "error",
+        source: "EventUpdateJob"
+      )
       raise StandardError, result[:error] # Trigger retry
     end
 
