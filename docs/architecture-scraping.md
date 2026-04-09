@@ -335,8 +335,12 @@ Configurés dans le prompt Claude :
 - "Vague", "Waves", "Jam" → atelier
 - "Intensif", "Retraite", "Résidentiel" → stage
 
-### Avatars événements
-Priorité d'affichage : `event.photo_url` > `professor.avatar_url` > placeholder initiale
+### Photos professeurs
+- Stockage : `public/photos/professors/prof_X.jpg` (300×300px, crop auto MiniMagick)
+- Priorité affichage dans cards : `event.photo_url` > `professor.avatar_url` > placeholder initiale
+- Auto-download : Claude extrait `professor_photo_url` au parsing, téléchargé si prof sans photo
+- Upload manuel : admin professors edit (file input + crop auto)
+- Servi par Rails/Cloudflare (pas de dépendance Cloudinary)
 
 ### Héritage sur auto-crawl
 Les ScrapedUrl auto-créées par le crawler héritent du parent :

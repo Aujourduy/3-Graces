@@ -13,7 +13,9 @@ Interface d'administration pour gérer les sources de scraping, les événements
 5. [Gestion des Events](#5-gestion-des-events)
 6. [Actions rapides](#6-actions-rapides)
 7. [Crawler de sites](#7-crawler-de-sites)
-8. [Sécurité](#8-sécurité)
+8. [Photos professeurs](#8-photos-professeurs)
+9. [Jobs Solid Queue](#9-jobs-solid-queue)
+10. [Sécurité](#10-sécurité)
 
 ---
 
@@ -380,7 +382,36 @@ Modèles testés :
 
 ---
 
-## 8. Sécurité
+## 8. Photos professeurs
+
+### Upload photo
+1. Aller sur `/admin/professors/:id/edit`
+2. Champ **"Photo (upload)"** : choisir une image
+3. L'image est automatiquement croppée en carré 300×300px
+4. Stockée dans `public/photos/professors/prof_X.jpg`
+5. Servie directement par Rails/Cloudflare (pas de dépendance externe)
+
+### Auto-download
+Quand Claude parse un site, il extrait `professor_photo_url` si une photo du prof est visible. Si le prof n'a pas encore de photo, elle est téléchargée et croppée automatiquement.
+
+### Alerte "Sans photo"
+Alerte bleue en haut de `/admin/professors` indiquant combien de profs n'ont pas de photo. Bouton filtre **"Sans photo"** pour les lister.
+
+---
+
+## 9. Jobs Solid Queue
+
+**URL** : `/admin/jobs`
+
+**Contenu :**
+- **Stats** : jobs en attente, échoués, terminés aujourd'hui, total
+- **Jobs recurring** : liste des jobs programmés (production uniquement)
+- **Jobs en attente/cours** : classe, queue, date, arguments
+- **Jobs échoués** : erreur + boutons Relancer / Supprimer
+
+---
+
+## 10. Sécurité
 
 ### A. Changer les credentials admin
 
@@ -525,10 +556,12 @@ L'admin ajoute automatiquement :
 | `/admin/events` | Liste Events |
 | `/admin/events/:id` | Détails Event |
 | `/admin/events/:id/edit` | Éditer Event |
+| `/admin/notifications` | Notifications / Alertes système |
+| `/admin/jobs` | Monitoring jobs Solid Queue |
 
 ---
 
-## 10. Limitations actuelles
+## 11. Limitations actuelles
 
 ### Pas d'interface pour :
 - **Gestion Professors** : Pas de CRUD admin pour les profs
