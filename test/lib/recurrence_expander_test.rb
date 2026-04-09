@@ -171,4 +171,59 @@ class RecurrenceExpanderTest < ActiveSupport::TestCase
       assert last_date <= Date.new(2027, 8, 31)
     end
   end
+
+  test "respects start_date and end_date from recurrence" do
+    event = {
+      titre: "Saison 2025/2026",
+      date_debut: "2025-09-05T19:30:00+02:00",
+      date_fin: "2025-09-05T21:30:00+02:00",
+      recurrence: {
+        "type" => "weekly",
+        "day_of_week" => "friday",
+        "time_start" => "19:30",
+        "time_end" => "21:30",
+        "start_date" => "2025-09-05",
+        "end_date" => "2026-06-27",
+        "excluded_dates" => [],
+        "excluded_ranges" => []
+      }
+    }
+
+    travel_to Date.new(2026, 4, 8) do
+      result = RecurrenceExpander.expand(event)
+      first_date = Date.parse(result.first[:date_debut])
+      last_date = Date.parse(result.last[:date_debut])
+
+      # Starts from today (April 8) not from Sept 5 (past)
+      assert first_date >= Date.new(2026, 4, 8), "First date should be >= today"
+      # Ends at June 27, not August 31
+      assert last_date <= Date.new(2026, 6, 27), "Last date should be <= end_date (June 27), got #{last_date}"
+      assert result.size < 13, "Expected < 13 events (Apr 10 to Jun 26), got #{result.size}"
+    end
+  end
+
+  test "start_date in future delays expansion" do
+    event = {
+      titre: "Prochaine saison",
+      date_debut: "2026-09-04T19:00:00+02:00",
+      date_fin: "2026-09-04T21:00:00+02:00",
+      recurrence: {
+        "type" => "weekly",
+        "day_of_week" => "friday",
+        "time_start" => "19:00",
+        "time_end" => "21:00",
+        "start_date" => "2026-09-04",
+        "end_date" => "2027-06-25",
+        "excluded_dates" => [],
+        "excluded_ranges" => []
+      }
+    }
+
+    travel_to Date.new(2026, 4, 8) do
+      result = RecurrenceExpander.expand(event)
+      first_date = Date.parse(result.first[:date_debut])
+      # Should start from Sep 4, not today
+      assert first_date >= Date.new(2026, 9, 4), "First date should be >= start_date (Sep 4), got #{first_date}"
+    end
+  end
 end

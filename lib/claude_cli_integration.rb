@@ -144,10 +144,15 @@ class ClaudeCliIntegration
           "day_of_week": "friday",
           "time_start": "19:30",
           "time_end": "21:30",
+          "start_date": "2025-09-05",
+          "end_date": "2026-06-27",
           "excluded_dates": ["2026-04-18"],
           "excluded_ranges": [{"from": "2026-07-15", "to": "2026-07-30"}]
         }
       }
+      - start_date : première date de la saison/période mentionnée sur le site (si mentionnée)
+      - end_date : dernière date de la saison/période mentionnée sur le site (si mentionnée)
+      - Si le site ne mentionne pas de période, omettre start_date et end_date
 
       CONTENU MARKDOWN :
       #{markdown}

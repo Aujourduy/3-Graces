@@ -39,9 +39,15 @@ class RecurrenceExpander
     time_start = recurrence["time_start"] || "19:00"
     time_end = recurrence["time_end"] || "21:00"
     excluded = build_excluded_set(recurrence)
-    end_date = calculate_end_date
 
-    current = Date.current
+    # Période : max(start_date, aujourd'hui) → min(end_date, 31 août)
+    rec_start = recurrence["start_date"].present? ? Date.parse(recurrence["start_date"]) : nil rescue nil
+    rec_end = recurrence["end_date"].present? ? Date.parse(recurrence["end_date"]) : nil rescue nil
+
+    start_date = [rec_start, Date.current].compact.max
+    end_date = rec_end || calculate_end_date
+
+    current = start_date
     current += 1 until current.wday == day_number
 
     events = []
