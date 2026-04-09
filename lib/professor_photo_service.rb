@@ -2,46 +2,36 @@ require "mini_magick"
 
 class ProfessorPhotoService
   PHOTO_DIR = Rails.root.join("public", "photos", "professors")
-  SIZES = { large: 300, medium: 150, thumb: 80 }.freeze
+  SIZE = 300
 
   def self.process_upload(professor, uploaded_file)
     return { error: "No file" } if uploaded_file.blank?
 
-    # Ensure directory exists
     FileUtils.mkdir_p(PHOTO_DIR)
 
-    # Generate filename from professor ID
-    basename = "prof_#{professor.id}"
+    filename = "prof_#{professor.id}.jpg"
+    output_path = PHOTO_DIR.join(filename)
 
-    # Process and save each size
-    SIZES.each do |name, size|
-      output_path = PHOTO_DIR.join("#{basename}_#{name}.jpg")
+    image = MiniMagick::Image.read(uploaded_file.read)
+    uploaded_file.rewind
 
-      image = MiniMagick::Image.read(uploaded_file.read)
-      uploaded_file.rewind
-
-      image.combine_options do |c|
-        c.resize "#{size}x#{size}^"
-        c.gravity "center"
-        c.extent "#{size}x#{size}"
-        c.quality 85
-      end
-      image.format "jpg"
-      image.write(output_path)
+    image.combine_options do |c|
+      c.resize "#{SIZE}x#{SIZE}^"
+      c.gravity "center"
+      c.extent "#{SIZE}x#{SIZE}"
+      c.quality 85
     end
+    image.format "jpg"
+    image.write(output_path)
 
-    # Return URL for the large version
-    "/photos/professors/#{basename}_large.jpg"
+    "/photos/professors/#{filename}"
   rescue => e
     { error: e.message }
   end
 
   def self.delete_photos(professor)
-    basename = "prof_#{professor.id}"
-    SIZES.each_key do |name|
-      path = PHOTO_DIR.join("#{basename}_#{name}.jpg")
-      FileUtils.rm_f(path)
-    end
+    path = PHOTO_DIR.join("prof_#{professor.id}.jpg")
+    FileUtils.rm_f(path)
   end
 
   def self.download_from_url(professor, url)
