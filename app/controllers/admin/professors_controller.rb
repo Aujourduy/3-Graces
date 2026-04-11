@@ -11,7 +11,7 @@ class Admin::ProfessorsController < Admin::ApplicationController
     end
 
     if params[:photo] == "missing"
-      scope = scope.where(avatar_url: [nil, ""])
+      scope = scope.where(avatar_url: [ nil, "" ])
     end
 
     if params[:q].present?
@@ -26,7 +26,7 @@ class Admin::ProfessorsController < Admin::ApplicationController
 
     # Counts for alerts
     @pending_review_count = Professor.where(status: "auto").count
-    @no_photo_count = Professor.where(avatar_url: [nil, ""]).count
+    @no_photo_count = Professor.where(avatar_url: [ nil, "" ]).count
 
     respond_to do |format|
       format.html

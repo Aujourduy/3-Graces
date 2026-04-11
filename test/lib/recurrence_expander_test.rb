@@ -68,7 +68,7 @@ class RecurrenceExpanderTest < ActiveSupport::TestCase
         "day_of_week" => "friday",
         "time_start" => "19:00",
         "time_end" => "21:00",
-        "excluded_dates" => ["2026-04-17", "2026-05-01"],
+        "excluded_dates" => [ "2026-04-17", "2026-05-01" ],
         "excluded_ranges" => []
       }
     }
@@ -94,7 +94,7 @@ class RecurrenceExpanderTest < ActiveSupport::TestCase
         "time_start" => "19:00",
         "time_end" => "21:00",
         "excluded_dates" => [],
-        "excluded_ranges" => [{ "from" => "2026-07-10", "to" => "2026-07-31" }]
+        "excluded_ranges" => [ { "from" => "2026-07-10", "to" => "2026-07-31" } ]
       }
     }
 

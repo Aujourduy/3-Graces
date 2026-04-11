@@ -20,7 +20,7 @@ class SiteCrawler
     SCRAPING_LOGGER.info({ event: "site_crawl_started", scraped_url_id: @scraped_url.id, root_url: @scraped_url.url }.to_json)
 
     visited = Set.new
-    queue = [{ url: normalize_url(@scraped_url.url), depth: 0 }]
+    queue = [ { url: normalize_url(@scraped_url.url), depth: 0 } ]
     pages_count = 0
 
     while queue.any? && pages_count < MAX_PAGES
@@ -74,7 +74,7 @@ class SiteCrawler
         url: url, depth: depth, http_status: result[:status],
         error_message: result[:error]
       )
-      return [page, nil]
+      return [ page, nil ]
     end
 
     html = result[:html]
@@ -96,13 +96,13 @@ class SiteCrawler
       llm_verdict: classification[:verdict],
       error_message: classification[:error]
     )
-    [page, html]
+    [ page, html ]
   rescue => e
     SCRAPING_LOGGER.error({ event: "page_crawl_error", url: url, error: e.message }.to_json)
     page = @site_crawl.crawled_pages.create!(
       url: url, depth: depth, error_message: e.message
     )
-    [page, nil]
+    [ page, nil ]
   end
 
   def extract_links(base_url, html)

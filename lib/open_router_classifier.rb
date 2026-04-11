@@ -54,7 +54,7 @@ class OpenRouterClassifier
       },
       body: {
         model: model,
-        messages: [{ role: "user", content: prompt }],
+        messages: [ { role: "user", content: prompt } ],
         temperature: 0,
         max_tokens: 10
       }.to_json,

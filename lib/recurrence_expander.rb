@@ -11,7 +11,7 @@ class RecurrenceExpander
 
   def self.expand(event_data)
     recurrence = event_data[:recurrence] || event_data["recurrence"]
-    return [event_data] if recurrence.nil?
+    return [ event_data ] if recurrence.nil?
 
     recurrence = recurrence.transform_keys(&:to_s) if recurrence.is_a?(Hash)
 
@@ -25,7 +25,7 @@ class RecurrenceExpander
         category: "recurrence",
         source: "RecurrenceExpander"
       )
-      [event_data]
+      [ event_data ]
     end
   end
 
@@ -34,7 +34,7 @@ class RecurrenceExpander
   def self.expand_weekly(event_data, recurrence)
     day_name = recurrence["day_of_week"].to_s.downcase
     day_number = DAY_MAP[day_name]
-    return [event_data] if day_number.nil?
+    return [ event_data ] if day_number.nil?
 
     time_start = recurrence["time_start"] || "19:00"
     time_end = recurrence["time_end"] || "21:00"
@@ -44,7 +44,7 @@ class RecurrenceExpander
     rec_start = recurrence["start_date"].present? ? Date.parse(recurrence["start_date"]) : nil rescue nil
     rec_end = recurrence["end_date"].present? ? Date.parse(recurrence["end_date"]) : nil rescue nil
 
-    start_date = [rec_start, Date.current].compact.max
+    start_date = [ rec_start, Date.current ].compact.max
     end_date = rec_end || calculate_end_date
 
     current = start_date

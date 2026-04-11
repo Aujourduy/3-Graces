@@ -135,8 +135,8 @@ class EventUpdateJob < ApplicationJob
     # 3. If still not found, auto-create with status "auto" (pending review)
     if professor.nil?
       # Split prenom/nom (last word = nom, rest = prenom)
-      parts = professor_nom.split(' ')
-      prenom = parts.length >= 2 ? parts[0..-2].join(' ') : nil
+      parts = professor_nom.split(" ")
+      prenom = parts.length >= 2 ? parts[0..-2].join(" ") : nil
       nom = parts[-1]
 
       professor = Professor.create!(
