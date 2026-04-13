@@ -22,6 +22,12 @@ namespace :scraping do
     puts "Done. Job enqueued to :scraping queue."
   end
 
+  desc "Verify scraped events vs live site screenshots via Claude CLI. Report in tmp/scraping_verify_report.md"
+  task verify: :environment do
+    results = ScrapingVerify.run_all
+    puts "\nReport: #{ScrapingVerify::REPORT_PATH}"
+  end
+
   desc "Dry-run scraping pipeline for all active URLs (no DB write). Reports ✅/❌ per URL."
   task dry_run: :environment do
     results = ScrapingDryRun.run_all
