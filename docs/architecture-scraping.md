@@ -324,7 +324,21 @@ scraped_url_id             # belongs_to
 - **Dates explicites** (ex: "12 avril, 26 avril") : Claude retourne N events séparés
 - **Weekly** (ex: "tous les vendredis") : Claude retourne 1 template avec `recurrence.type=weekly`, Rails génère les dates (aujourd'hui → 31 août)
 - **Exclusions** : `excluded_dates` (dates isolées) + `excluded_ranges` (périodes vacances)
-- Seul `weekly` est supporté. Autres types → passthrough (1 event)
+- Seul `weekly` est supporté. Autres types → passthrough (1 event) + notification admin auto
+- Events récurrents marqués `generated_from_recurrence=true`
+
+### Déduplication
+- **Cross-URL** : même prof + même date + même heure depuis 2 URLs → garde le plus complet
+- **Intra-URL** : même prof + même date + même heure dans la même URL → **explicite gagne sur récurrent**
+- Score de complétude : description, adresse, prix, tags pondérés
+- Clean slate à chaque re-parsing (supprime events avant recréation)
+
+### Tests automatisés QA
+3 tâches rake disponibles :
+- `scraping:dry_run` — vérifie fetch + markdown sans écrire en DB (~100s)
+- `scraping:verify` — Claude compare screenshots vs events DB (match/partial/mismatch, ~3min)
+- `scraping:missing` — Claude détecte events visibles sur le site mais absents de la DB (~1min)
+- Détails : `docs/scraping-urls.md`
 
 ### Normalisation des titres
 - Mots en MAJUSCULES (2+ lettres) → capitalize automatique

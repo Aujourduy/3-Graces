@@ -111,3 +111,96 @@ bin/rails test test/tasks/scraping_dry_run_test.rb
 - **Audit régulier** : vérifier qu'aucune URL n'est cassée (changement de site, timeout)
 - **Avant un déploiement** : s'assurer que le pipeline fonctionne end-to-end sur toutes les sources
 - **Debug** : identifier rapidement les URLs qui nécessitent Playwright (JS-only) vs HTTParty
+
+---
+
+## Tâche `scraping:verify`
+
+Compare visuellement les events en DB avec ce qui est affiché sur le site source. Utilise Claude CLI pour analyser des screenshots Playwright.
+
+### Lancer
+
+```bash
+bin/rails scraping:verify
+```
+
+### Pipeline
+
+1. Screenshot Playwright full-page de chaque URL active (exclut example.com, localhost)
+2. Récupère les events futurs en DB pour cette URL
+3. Envoie screenshot + events JSON à Claude CLI (`claude -p`)
+4. Claude compare et retourne `match` / `partial` / `mismatch` avec issues
+
+### Rapport
+
+Généré dans `tmp/scraping_verify_report.md`.
+
+**Status possibles :**
+
+| Status | Signification |
+|--------|---------------|
+| ✅ match | Events DB correspondent au screenshot |
+| ⚠️ partial | Correspondance partielle (résolution screenshot, noms différents) |
+| ❌ mismatch | Events DB ne correspondent pas au site |
+| 💀 error | Screenshot échoué ou erreur Claude |
+| ⏭️ skip | URL sans events futurs en DB |
+
+### Limites
+
+- ~15-20s par URL (screenshot + appel Claude)
+- La résolution du screenshot peut limiter la vérification détaillée
+- Claude peut retourner "partial" quand les events sont corrects mais difficilement lisibles
+
+---
+
+## Tâche `scraping:missing`
+
+Détecte les events **visibles sur le site mais absents de la DB**. L'inverse de `scraping:verify`.
+
+### Lancer
+
+```bash
+bin/rails scraping:missing
+```
+
+### Pipeline
+
+1. Screenshot Playwright full-page (URLs avec events futurs uniquement)
+2. Envoie screenshot + liste des events DB à Claude CLI
+3. Claude identifie les events sur le screenshot qu'on n'a pas en DB
+4. **Comparaison par DATE** (pas par titre) — même prof + même date = couvert
+
+### Rapport
+
+Généré dans `tmp/scraping_missing_report.md`.
+
+### Limites connues
+
+- **Faux positifs possibles** — Claude peut halluciner des dates/noms sur des screenshots complexes (QR codes, images, texte petit). Vérifier manuellement les events signalés.
+- Ne s'exécute que sur les URLs avec events futurs en DB (skip les autres)
+- ~15s par URL
+
+### Résultat type
+
+```
+URLs vérifiées : 4
+✅ Complet : 2
+⚠️ Events manquants détectés : 2
+💀 Erreurs : 0
+Total events manquants : 5
+```
+
+---
+
+## Récapitulatif des 3 tâches
+
+| Tâche | Ce qu'elle vérifie | Claude ? | Durée |
+|-------|-------------------|----------|-------|
+| `scraping:dry_run` | Pipeline fetch + markdown OK | Non | ~100s |
+| `scraping:verify` | Events DB correspondent au site | Oui | ~3min |
+| `scraping:missing` | Events sur le site absents de la DB | Oui | ~1min |
+
+**Ordre recommandé :**
+1. `dry_run` d'abord (rapide, sans Claude)
+2. `verify` ensuite (vérifie la cohérence)
+3. `missing` en dernier (détecte les oublis)

@@ -2,7 +2,7 @@
 
 **Dernière mise à jour :** 2026-04-09
 **Branch :** main
-**Dernier commit main :** 324952f
+**Dernier commit main :** 7d6376b
 **Statut :** ✅ **PROJET COMPLET** + DaisyUI + Crawler + Récurrences + Date/heure + Notifications + Photos locales + Jobs admin
 
 ---
@@ -605,13 +605,32 @@ bin/rails scraping:test[1]      # Test parsing sans sauvegarder
 
 ---
 
+### Session 2026-04-11 → 2026-04-14 ✅
+
+**Tests automatisés QA :**
+- `scraping:dry_run` — vérifie fetch + markdown sur toutes URLs actives (27 URLs, 20 OK, 7 erreurs connues)
+- `scraping:verify` — Claude compare screenshots vs events DB (match/partial/mismatch)
+- `scraping:missing` — Claude détecte events sur le site absents de DB (4 faux positifs identifiés)
+- Documentation complète : `docs/scraping-urls.md`
+
+**Déduplication events :**
+- Cross-URL : même prof + date + heure depuis 2 URLs → garde le plus complet (18 doublons supprimés)
+- Intra-URL : explicite > récurrent (flag `generated_from_recurrence`)
+- 0 doublons restants
+
+**Autres :**
+- URL #9 (Peter Wilberforce) passée en `use_browser: true` (Playwright) pour récupérer le contenu JS-only en bas de page
+- Rubocop : 16 offenses autocorrigées, 0 restantes
+- Infinite scroll sur toutes les pages admin (professors, site_crawls, notifications, jobs)
+
+---
+
 ## ⚠️ TODO Prochaine Session
 
 **Priorité 1 — Améliorations scraping :**
 - Support récurrence monthly dans RecurrenceExpander
-- Nettoyer faux positifs blog Wilberforce (#86 : 24 events blog)
 - Checkbox `auto_recrawl` dans formulaire admin ScrapedUrl
-- Scraper les 5 profs restants sans photo (Vernier fait, restent Desboist, Omnès, Jones, Chantereau+Sartelet)
+- Scraper les 5 profs restants sans photo (Desboist, Omnès, Jones, Chantereau+Sartelet)
 
 **Priorité 2 — Architecture :**
 - Co-animation (table join event_professors pour multi-profs par event)
