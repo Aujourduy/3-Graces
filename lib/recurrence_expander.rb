@@ -61,6 +61,7 @@ class RecurrenceExpander
         tz_offset = Time.zone.parse(current.to_s).strftime("%:z")
         event[:date_debut] = "#{current}T#{time_start}:00#{tz_offset}"
         event[:date_fin] = "#{current}T#{time_end}:00#{tz_offset}"
+        event[:generated_from_recurrence] = true
         events << event
       end
       current += 7

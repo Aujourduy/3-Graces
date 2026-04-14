@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_09_040351) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_14_041033) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -73,6 +73,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_09_040351) do
     t.integer "duree_minutes"
     t.boolean "en_ligne", default: false
     t.boolean "en_presentiel", default: true
+    t.boolean "generated_from_recurrence", default: false, null: false
     t.boolean "gratuit", default: false
     t.time "heure_debut"
     t.time "heure_fin"

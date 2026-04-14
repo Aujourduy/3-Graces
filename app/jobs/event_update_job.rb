@@ -115,7 +115,8 @@ class EventUpdateJob < ApplicationJob
       gratuit: event_data[:gratuit],
       en_ligne: event_data[:en_ligne],
       en_presentiel: event_data[:en_presentiel],
-      professor: professor
+      professor: professor,
+      generated_from_recurrence: event_data[:generated_from_recurrence] || false
     )
 
     event.save!
@@ -180,46 +181,81 @@ class EventUpdateJob < ApplicationJob
     professor
   end
 
-  # Remove events from THIS scraped_url that duplicate events from OTHER scraped_urls.
-  # Duplicate = same professor + same date + same heure (or both nil).
-  # Keep the one from the OTHER url (already in DB), delete the one just created.
+  # Remove duplicate events:
+  # 1. Cross-URL: same prof + date + heure from different URLs → keep most complete
+  # 2. Intra-URL: same prof + date + heure from same URL → keep explicit over recurrent
   def deduplicate_events(scraped_url)
     count = 0
+
     Event.where(scraped_url: scraped_url).find_each do |event|
-      duplicate = Event.where.not(scraped_url: scraped_url)
+      # Cross-URL dedup
+      cross_dup = Event.where.not(scraped_url: scraped_url)
                        .where(professor_id: event.professor_id, date_debut_date: event.date_debut_date)
                        .where(heure_debut: event.heure_debut)
                        .first
 
-      if duplicate
-        # Keep the one with more info (longer description, more fields filled)
-        keep, remove = completeness_score(duplicate) >= completeness_score(event) ? [ duplicate, event ] : [ event, duplicate ]
+      if cross_dup
+        keep, remove = pick_best(cross_dup, event)
         remove.destroy
         count += 1
+        log_dedup(keep, remove, "cross_url")
+        next
+      end
 
-        SCRAPING_LOGGER.info({
-          event: "event_deduplicated",
-          kept_id: keep.id,
-          removed_id: remove.id,
-          professor: keep.professor&.nom,
-          date: keep.date_debut_date.to_s,
-          scraped_url_kept: keep.scraped_url_id,
-          scraped_url_removed: remove.scraped_url_id
-        }.to_json)
+      # Intra-URL dedup (same URL, same prof + date + heure, different titre)
+      intra_dup = Event.where(scraped_url: scraped_url)
+                       .where(professor_id: event.professor_id, date_debut_date: event.date_debut_date)
+                       .where(heure_debut: event.heure_debut)
+                       .where.not(id: event.id)
+                       .first
+
+      if intra_dup
+        keep, remove = pick_best(event, intra_dup)
+        remove.destroy
+        count += 1
+        log_dedup(keep, remove, "intra_url")
       end
     end
     count
   end
 
+  # Pick which event to keep: explicit > recurrent, then most complete
+  def pick_best(a, b)
+    # Explicit always wins over recurrent
+    if a.generated_from_recurrence && !b.generated_from_recurrence
+      return [ b, a ]
+    elsif !a.generated_from_recurrence && b.generated_from_recurrence
+      return [ a, b ]
+    end
+
+    # Both same type → keep the most complete
+    completeness_score(a) >= completeness_score(b) ? [ a, b ] : [ b, a ]
+  end
+
   def completeness_score(event)
     score = 0
     score += 1 if event.titre.present?
-    score += 1 if event.description.present?
+    score += 2 if event.description.present?
     score += 2 if event.heure_debut.present?
     score += 1 if event.lieu.present?
-    score += 1 if event.adresse_complete.present?
+    score += 2 if event.adresse_complete.present?
     score += 1 if event.prix_normal.present?
     score += 1 if event.tags.present? && event.tags.any?
     score
+  end
+
+  def log_dedup(keep, remove, reason)
+    SCRAPING_LOGGER.info({
+      event: "event_deduplicated",
+      reason: reason,
+      kept_id: keep.id,
+      kept_titre: keep.titre,
+      removed_id: remove.id,
+      removed_titre: remove.titre,
+      professor: keep.professor&.nom,
+      date: keep.date_debut_date.to_s,
+      kept_recurrent: keep.generated_from_recurrence,
+      removed_recurrent: remove.generated_from_recurrence
+    }.to_json)
   end
 end
