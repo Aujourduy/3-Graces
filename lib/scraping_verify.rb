@@ -165,12 +165,12 @@ class ScrapingVerify
 
     results.each do |r|
       icon = case r[:status]
-             when "match" then "✅"
-             when "partial" then "⚠️"
-             when "mismatch" then "❌"
-             when "skip" then "⏭️"
-             else "💀"
-             end
+      when "match" then "✅"
+      when "partial" then "⚠️"
+      when "mismatch" then "❌"
+      when "skip" then "⏭️"
+      else "💀"
+      end
 
       label = r[:nom].presence || r[:url].to_s.truncate(60)
       report += "### #{icon} ##{r[:url_id]} #{label} (#{r[:duration_ms]}ms)\n\n"
